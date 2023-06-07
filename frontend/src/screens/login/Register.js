@@ -34,7 +34,7 @@ function Register() {
                             </div>
                             <button className="login-button">Zaloguj się</button>
                             <div className="login-second-option">
-                                <p>Posiadasz już konto <a href="#">Zaloguj się</a></p>
+                                <p>Posiadasz już konto <a href="login">Zaloguj się</a></p>
                             </div>
                         </form>
                     </div>

@@ -23,7 +23,7 @@ function Login() {
                             </div>
                             <button className="login-button">Zaloguj się</button>
                             <div className="login-second-option">
-                                <p>Nie masz jeszcze konta? <a href="#">Zarejestruj się</a></p>
+                                <p>Nie masz jeszcze konta? <a href="register">Zarejestruj się</a></p>
                             </div>
                             <div className="login-second-option">
                                 <p><a href="#">Nie pamiętasz hasła?</a></p>

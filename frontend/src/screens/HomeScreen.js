@@ -11,8 +11,6 @@ function HomeScreen() {
         <h1 className='py-3'>HomeScreen</h1>
         <h1 className='py-3'>HomeScreen</h1>
 
-
-    
       <Footer/>
     </div>
   )
