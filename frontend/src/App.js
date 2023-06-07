@@ -1,4 +1,3 @@
-import './App.css';
 import { Container } from 'react-bootstrap'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -10,9 +9,9 @@ function App() {
   return (
     <BrowserRouter>
       <main>
-        <Container>
+        <Container style={{paddingBottom: '5rem'}}>
           <Routes>
-            <Route path='/home' element={<HomeScreen/>}/>
+            <Route path='' element={<HomeScreen/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Routes>

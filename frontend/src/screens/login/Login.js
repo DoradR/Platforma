@@ -4,7 +4,7 @@ import { FaLock, FaEnvelope } from 'react-icons/fa'
 
 function Login() {
   return (
-    <div>
+    <div className='container'>
         <main className="body-login">
             <section className="login-section">
                 <div className="login-form-box">

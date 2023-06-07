@@ -1,19 +1,19 @@
 import React from 'react'
 import './Login.css'
-import { FaLock, FaEnvelope, FaUserAlt } from 'react-icons/fa'
+import { FaLock, FaEnvelope, FaUser } from 'react-icons/fa'
 
 
 function Register() {
   return (
-    <div>
+    <div className='container'>
         <main className="body-login">
             <section className="login-section">
-                <div className="login-form-box">
+                <div className="login-form-box-register">
                     <div className="login-form-value">
                         <form className="login-form-signin" method="post">
                             <h2>Zarejestruj się</h2>
                             <div className="login-inputbox">
-                                <FaUserAlt className='icon'/>
+                                <FaUser className='icon'/>
                                 <input type="nickname" name="nickname" id="inputNickname" className="form-control" required/>
                                 <label htmlFor="">Nazwa użytkownika</label>
                             </div>
