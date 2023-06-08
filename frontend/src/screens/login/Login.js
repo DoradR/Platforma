@@ -1,6 +1,7 @@
 import React from 'react'
 import './Login.css'
 import { FaLock, FaEnvelope } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 function Login() {
   return (
@@ -23,10 +24,10 @@ function Login() {
                             </div>
                             <button className="login-button">Zaloguj się</button>
                             <div className="login-second-option">
-                                <p>Nie masz jeszcze konta? <a href="register">Zarejestruj się</a></p>
+                                <p>Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link></p>
                             </div>
                             <div className="login-second-option">
-                                <p><a href="#">Nie pamiętasz hasła?</a></p>
+                                <p><Link to='#'>Nie pamiętasz hasła?</Link></p>
                             </div>
                         </form>
                     </div>

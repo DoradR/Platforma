@@ -1,39 +1,82 @@
 import React from 'react'
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { Container, Nav, Navbar, NavDropdown, Row, Col } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import logo from './logo.png'
 import './Header.css'
-import { FiLogIn } from 'react-icons/fi'
+import { FaUserCircle } from 'react-icons/fa'
+import { BsCartFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
 function Header() {
   return (
-    <Navbar bg="light" expand="lg" collapseOnSelect>
-      <Container>
-        <Navbar.Brand href="#home"><img src={logo} alt="Logo strony"/></Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home" >STRONA GŁÓWNA</Nav.Link>
-            <Nav.Link href="#link">O NAS</Nav.Link>
-            <NavDropdown title="OFERTA" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">DIETETYKA WETERYNARYJNA</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">SZKOŁA I KURSY</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">BEHAWIORYSTYKA</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">CENNIK</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#blog">BLOG</Nav.Link>
-            <Nav.Link href="#sklep">SKLEP</Nav.Link>
-            <Nav.Link href="#kontakt">KONTAKT</Nav.Link>
-            <NavDropdown title="WIĘCEJ" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">PARTNERZY</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Action 2</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Action 3</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="login"><FiLogIn/> ZALOGUJ SIĘ</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+      <Navbar bg="light" expand="lg" collapseOnSelect>
+        <Container>
+
+            <LinkContainer to='/'>
+              <Navbar.Brand><img src={logo} alt="Logo strony"/></Navbar.Brand>
+            </LinkContainer>
+
+
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+
+                <LinkContainer to='/'>
+                  <Nav.Link>STRONA GŁÓWNA</Nav.Link>
+                </LinkContainer>
+
+                <LinkContainer to='/about'>
+                  <Nav.Link>O NAS</Nav.Link>
+                </LinkContainer>
+                <NavDropdown title="OFERTA" id="basic-nav-dropdown">
+                  <LinkContainer to='/diet'>
+                    <NavDropdown.Item>DIETETYKA WETERYNARYJNA</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/curses'>
+                    <NavDropdown.Item>SZKOŁA I KURSY</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='#'>
+                    <NavDropdown.Item>BEHAWIORYSTYKA</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <NavDropdown.Divider />
+
+                  <LinkContainer to='/pricing'> 
+                    <NavDropdown.Item>CENNIK</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+                <LinkContainer to='/blog'>
+                  <Nav.Link>BLOG</Nav.Link>
+                </LinkContainer>
+
+                <LinkContainer to='/shop'>
+                  <Nav.Link>SKLEP</Nav.Link>
+                </LinkContainer>
+
+                <LinkContainer to='/contact'>
+                  <Nav.Link>KONTAKT</Nav.Link>
+                </LinkContainer>
+                <NavDropdown title="WIĘCEJ" id="basic-nav-dropdown">
+                  <LinkContainer to='/partners'>
+                    <NavDropdown.Item>PARTNERZY</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+                </Nav>
+                <Nav>
+                <LinkContainer to='/cart'>
+                  <Nav.Link><BsCartFill/> KOSZYK</Nav.Link>
+                </LinkContainer>
+
+                <LinkContainer to='/login'>
+                  <Nav.Link><FaUserCircle/> ZALOGUJ SIĘ</Nav.Link>
+                </LinkContainer>
+              </Nav>
+            </Navbar.Collapse>
+        </Container>
+      </Navbar>
   )
 }
 
