@@ -1,11 +1,10 @@
 import React from 'react'
-import { Container, Nav, Navbar, NavDropdown, Row, Col } from 'react-bootstrap'
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import logo from './logo.png'
 import './Header.css'
 import { FaUserCircle } from 'react-icons/fa'
 import { BsCartFill } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
 
 function Header() {
   return (
@@ -38,7 +37,7 @@ function Header() {
                     <NavDropdown.Item>SZKOŁA I KURSY</NavDropdown.Item>
                   </LinkContainer>
 
-                  <LinkContainer to='#'>
+                  <LinkContainer to='/behaviorist'>
                     <NavDropdown.Item>BEHAWIORYSTYKA</NavDropdown.Item>
                   </LinkContainer>
 
