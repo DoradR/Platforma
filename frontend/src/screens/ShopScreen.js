@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import axios from 'axios'
+import config from '../config'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
@@ -9,11 +10,14 @@ import Footer from '../components/Footer/Footer'
 function ShopScreen() {
   const [products, setProducts] = useState([])
 
-  useEffect(() => {
+  const env = process.env.NODE_ENV || 'development';
+  const backendUrl = config[env].backendUrl;
 
+  useEffect(() => {
     async function fetchProducts(){
-      const {data} = await axios.get('/api/products')
+      const {data} = await axios.get(`${backendUrl}/api/products/`)
       setProducts(data)
+      console.log(data)
     }
     
     fetchProducts()
