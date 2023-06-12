@@ -7,9 +7,9 @@ function Product({product}) {
   return (
     <Card className="my-3 p-3 mx-4 rounded">
         <Link to={`/product/${product._id}`}>
-            <Card.Img src={product.image} style={{display: 'flex', justifySelf:'center'}}/>
+            <Card.Img src={product.image} style={{display: 'flex', justifySelf:'center', margin: 'auto'}}/>
         </Link>
-        <Card.Body>
+        <Card.Body className='mx-auto'>
             <Link to={`/product/${product._id}`}>
                 <Card.Title as="div">
                     <strong style={{color: 'black', display: 'inline-block'}}>{product.name}</strong>
