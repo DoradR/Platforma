@@ -17,7 +17,6 @@ function ShopScreen() {
     async function fetchProducts(){
       const {data} = await axios.get(`${backendUrl}/api/products/`)
       setProducts(data)
-      console.log(data)
     }
     
     fetchProducts()

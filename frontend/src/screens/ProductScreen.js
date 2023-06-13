@@ -1,23 +1,37 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../product'
+import axios from 'axios'
+import config from '../config'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 
-function ProductScreen( match ) {
-  const product_id = useParams()
-  const product = products.find((p) => p._id === product_id.id)
+function ProductScreen( {match} ) {
+  const params = useParams()
+  const [product, setProduct] = useState([])
+
+  const env = process.env.NODE_ENV || 'development';
+  const backendUrl = config[env].backendUrl;
+
+  useEffect(() => {
+    async function fetchProducts(){
+      const {data} = await axios.get(`${backendUrl}/api/products/${params.id}`)
+      setProduct(data)
+    }
+    
+    fetchProducts()
+
+  }, [])
     return (
     <div>
         <Header/>
           <div className='p-3'>
             <Link to='/shop' className='btn btn-outline-secondary my-3'>Wróć do poprzedniej strony</Link>
-            <Row className='shopscreen-row mx-auto'>
-              <Col md={6}>
-                <Image src={product.image} alt={product.name} fluid />
+            <Row className='shopscreen-row mx-auto' style={{display: 'flex', justifyContent: 'center'}}>
+              <Col md='auto'>
+                <Image src={product.image} alt={product.name} fluid className='mx-auto'/>
               </Col>
               <Col md={3}>
                 <ListGroup variant='flush'>
