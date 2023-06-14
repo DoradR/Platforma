@@ -30,10 +30,10 @@ function ProductScreen( {match} ) {
           <div className='p-3'>
             <Link to='/shop' className='btn btn-outline-secondary my-3'>Wróć do poprzedniej strony</Link>
             <Row className='shopscreen-row mx-auto' style={{display: 'flex', justifyContent: 'center'}}>
-              <Col md='auto'>
+              <Col md='auto' className='mt-3'>
                 <Image src={product.image} alt={product.name} fluid className='mx-auto'/>
               </Col>
-              <Col md={3}>
+              <Col md={3} className='mt-3'>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h3>{product.name}</h3>
@@ -52,7 +52,7 @@ function ProductScreen( {match} ) {
                   </ListGroup.Item>
                 </ListGroup>
               </Col>
-              <Col md={3}>
+              <Col md={3} className='mt-3'>
                 <Card>
                   <ListGroup variant='flush'>
                     <ListGroup.Item>

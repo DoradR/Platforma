@@ -9,7 +9,7 @@ function Product({product}) {
         <Link to={`/product/${product._id}`}>
             <Card.Img src={product.image} style={{display: 'flex', justifySelf:'center', margin: 'auto'}}/>
         </Link>
-        <Card.Body className='mx-auto'>
+        <Card.Body>
             <Link to={`/product/${product._id}`}>
                 <Card.Title as="div">
                     <strong style={{color: 'black', display: 'inline-block'}}>{product.name}</strong>

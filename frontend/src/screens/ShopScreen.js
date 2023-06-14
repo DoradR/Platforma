@@ -1,25 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
-import axios from 'axios'
-import config from '../config'
+import { useDispatch, useSelector } from "react-redux"
+import { listProducts } from '../actions/productActions'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 
 function ShopScreen() {
-  const [products, setProducts] = useState([])
-
-  const env = process.env.NODE_ENV || 'development';
-  const backendUrl = config[env].backendUrl;
+  const dispatch = useDispatch()
+  const productList = useSelector(state => state.productList)
+  const {error, loading, products} = productList
 
   useEffect(() => {
-    async function fetchProducts(){
-      const {data} = await axios.get(`${backendUrl}/api/products/`)
-      setProducts(data)
-    }
-    
-    fetchProducts()
+    dispatch(listProducts())
 
   }, [])
 
