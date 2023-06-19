@@ -20,9 +20,7 @@ function App() {
             <Route path='/register' element={<Register/>} exact/>
 
             <Route path='/shop' element={<ShopScreen/>} exact/>
-            <Route path='/product/:id' element={<ProductScreen
-            
-            />}/>
+            <Route path='/product/:id' element={<ProductScreen/>}/>
           </Routes>
         </Container>
 

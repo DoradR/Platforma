@@ -6,6 +6,8 @@ import { listProducts } from '../actions/productActions'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 function ShopScreen() {
   const dispatch = useDispatch()
@@ -15,18 +17,22 @@ function ShopScreen() {
   useEffect(() => {
     dispatch(listProducts())
 
-  }, [])
+  }, [dispatch])
 
   return (
     <div>
       <Header/>
-        <Row className='shopscreen-row mx-auto'>
-          {products.map(product => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product}/>
-            </Col>
-          ))}
+      {loading ? <Loader/>
+        : error ? <Message>{error}</Message>  
+          :
+          <Row className='shopscreen-row mx-auto'>
+            {products.map(product => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product}/>
+              </Col>
+            ))}
         </Row>
+      }
       <Footer/>
     </div>
   )
