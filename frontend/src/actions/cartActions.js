@@ -8,7 +8,7 @@ export const addToCart = (id, quantity) => async (dispatch, getState) => {
         const env = process.env.NODE_ENV || 'development';
         const backendUrl = config[env].backendUrl;
         
-        const {data} = await axios.get(`${backendUrl}/api/products/${id}/`)
+        const {data} = await axios.get(`${backendUrl}/api/products/${id}`)
 
         dispatch({
             type: CART_ADD_ITEM,

@@ -48,3 +48,12 @@ main{
         padding-bottom: 15rem
     }
 }
+
+.link-in-link{
+    color: black;
+    text-decoration: none;
+}
+
+.link-in-link:hover{
+    text-decoration: underline;
+}
