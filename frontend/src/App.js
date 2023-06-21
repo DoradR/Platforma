@@ -8,6 +8,7 @@ import Register from './screens/login/Register'
 
 import ShopScreen from './screens/ShopScreen'
 import ProductScreen from './screens/ProductScreen'
+import CartScreen from './screens/CartScreen'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
 
             <Route path='/shop' element={<ShopScreen/>} exact/>
             <Route path='/product/:id' element={<ProductScreen/>}/>
+            <Route path='/cart/:id?' element={<CartScreen/>}/>
           </Routes>
         </Container>
 
