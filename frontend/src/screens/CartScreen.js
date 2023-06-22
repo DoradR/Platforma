@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
-import { addToCart } from '../actions/cartActions'
+import { Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem } from 'react-bootstrap'
+import { addToCart, removeFromCart } from '../actions/cartActions'
+import { BsCartFill } from 'react-icons/bs'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
@@ -14,6 +15,7 @@ function CartScreen() {
   const quantity = location.search ? Number(location.search.split('=')[1]) : 1
   
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const cart = useSelector(state => state.cart)
   const {cartItems} = cart
@@ -21,20 +23,27 @@ function CartScreen() {
   useEffect(() => {
     if(id){
       dispatch(addToCart(id, quantity))
+      navigate('/cart')
     }
   }, [dispatch, id, quantity])
 
   const removeFromCartHandler = (id) => {
-    console.log('remove:', id )
+    dispatch(removeFromCart(id))
+  }
+
+ 
+  const checkoutHandler = () => {
+    navigate('/login?redirect=shipping')
   }
 
   return (
     <div>
       <Header/>
         <div className='p-3'>
-          <Row>
-            <Col md={8}>
-              <h1>Koszyk</h1>
+        <Link to='/shop' className='btn btn-outline-secondary my-3'>Kontynuuj zakupy</Link>
+          <Row className='shopscreen-row'>
+            <Col md={8} className='mt-3'>
+              <h1><BsCartFill/> Koszyk</h1>
               {cartItems.length === 0 ? (
                 <Message variant='info'>Twój koszyk jest pusty <Link to='/shop' className='link-in-link'><strong>wróć do sklepu</strong></Link></Message>
               ) : (
@@ -58,7 +67,7 @@ function CartScreen() {
                           <Form.Control
                             as='select'
                             value={item.quantity}
-                            onChange={(e) => dispatch(addToCart(item.product, e.target.value))}
+                            onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}
                           >
                             {
                               [...Array(item.countInStock).keys()].map((x) =>(
@@ -85,7 +94,28 @@ function CartScreen() {
                 </ListGroup>
               )}
             </Col>
-            <Col md={4}></Col>
+            <Col md={4} className='mt-3'>
+              <Card>
+                <ListGroup variant='flush'>
+                  <ListGroup.Item>
+                    <h2>Suma częściowa {cartItems.reduce((acc, item) => acc + item.quantity, 0)} przedmiotów:</h2>
+                    <h3><strong>${cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}</strong></h3>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn-info'
+                      style={{width:'100%'}}
+                      disabled={cartItems.length === 0}
+                      onClick={checkoutHandler}
+                    >
+                      Złóż zamówienie
+                    </Button>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card>
+            </Col>
           </Row>
         </div>
       <Footer/>
