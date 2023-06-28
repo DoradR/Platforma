@@ -5,11 +5,11 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import Product, MyUser
+from base.models import MyUser
 
 from django.contrib.auth.hashers import make_password
-from rest_framework import status
-from .serializers import ProductSerializer, UserSerializer, UserSerializerWithToken
+from rest_framework.exceptions import ValidationError
+from base.serializers import UserSerializer, UserSerializerWithToken
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -31,32 +31,23 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
+    username = data['username']
+    email = data['email']
+    password = data['password']
+
+    if MyUser.objects.filter(username=username).exists():
+        raise ValidationError('Nazwa użytkownika jest już zajęta')
+    
+    if MyUser.objects.filter(email=email).exists():
+        raise ValidationError('Email jest już zajęty')
+    
     user = MyUser.objects.create(
-        username=data['username'],
-        email=data['email'],
-        password=make_password(data['password'])
+        username=username,
+        email=email,
+        password=make_password(password)
     )
     serializer = UserSerializerWithToken(user, many=False)
     return Response(serializer.data)
-
-
-# @api_view(['GET'])
-# def getRoutes(request):
-#     routes = [
-#         '/api/products/',
-#         '/api/products/create/',
-
-#         '/api/products/upload/',
-
-#         '/api/products/<id>/reviews/'
-
-#         '/api/products/top/',
-#         '/api/products/<id>/',
-
-#         '/api/products/delete/<id>/'
-#         '/api/products/<update>/<id>/'
-#     ]
-#     return Response(routes)
 
 
 @api_view(['GET'])
@@ -72,18 +63,4 @@ def getUserProfile(request):
 def getUsers(request):
     users = MyUser.objects.all()
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def getProducts(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def getProduct(request, pk):
-    product = Product.objects.get(_id=pk)
-    serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
