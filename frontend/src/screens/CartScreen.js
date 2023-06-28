@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { BsCartFill } from 'react-icons/bs'
 
@@ -25,7 +25,7 @@ function CartScreen() {
       dispatch(addToCart(id, quantity))
       navigate('/cart')
     }
-  }, [dispatch, id, quantity])
+  }, [dispatch, id, quantity, navigate])
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -43,7 +43,6 @@ function CartScreen() {
         <Link to='/shop' className='btn btn-outline-secondary my-3'>Kontynuuj zakupy</Link>
           <Row className='shopscreen-row'>
             <Col md={8} className='mt-3'>
-              <h1><BsCartFill/> Koszyk</h1>
               {cartItems.length === 0 ? (
                 <Message variant='info'>Twój koszyk jest pusty <Link to='/shop' className='link-in-link'><strong>wróć do sklepu</strong></Link></Message>
               ) : (
