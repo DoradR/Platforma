@@ -1,12 +1,23 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import logo from './logo.png'
 import './Header.css'
 import { FaUserCircle } from 'react-icons/fa'
 import { BsCartFill } from 'react-icons/bs'
+import { logout } from '../../actions/userActions'
 
 function Header() {
+
+  const userLogin = useSelector(state => state.userLogin)
+  const{userInfo} = userLogin
+
+  const dispatch = useDispatch()
+
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
   return (
       <Navbar bg="light" expand="lg" collapseOnSelect>
         <Container>
@@ -69,9 +80,21 @@ function Header() {
                   <Nav.Link><BsCartFill/> KOSZYK</Nav.Link>
                 </LinkContainer>
 
-                <LinkContainer to='/login'>
-                  <Nav.Link><FaUserCircle/> ZALOGUJ SIĘ</Nav.Link>
-                </LinkContainer>
+                {userInfo ? (
+                  <NavDropdown title={userInfo.username} id='username' style={{textTransform:'uppercase'}} drop={'start'}>
+
+                    <LinkContainer to='/profile'>
+                      <NavDropdown.Item>Profil</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+
+                  </NavDropdown>
+                ): (
+                  <LinkContainer to='/login'>
+                    <Nav.Link><FaUserCircle/> ZALOGUJ SIĘ</Nav.Link>
+                  </LinkContainer>
+                )}
               </Nav>
             </Navbar.Collapse>
         </Container>
