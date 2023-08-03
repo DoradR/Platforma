@@ -54,11 +54,11 @@ function ProductScreen() {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                          Cena: ${product.price}
+                          <strong>Cena: </strong>${product.price}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                          Opis: {product.description}
+                          <strong>Opis: </strong>{product.description}
                         </ListGroup.Item>
                       </ListGroup>
                     </Col>

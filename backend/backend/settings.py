@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-=eqxd1rew*hxtry+!l!_k=!mcyubpuhhax*iy$opyl3ap%zk=r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.156',]
+ALLOWED_HOSTS = ['192.168.1.156', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -153,3 +153,7 @@ MEDIA_ROOT = 'static/images'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+from django.core.mail.backends.smtp import EmailBackend
+
+
