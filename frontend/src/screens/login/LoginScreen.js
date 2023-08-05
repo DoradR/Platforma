@@ -74,7 +74,7 @@ function LoginScreen() {
                             </div>
 
                             <div className="login-second-option">
-                                <p><Link to='#'>Nie pamiętasz hasła?</Link></p>
+                                <p><Link to='/reset-password'>Nie pamiętasz hasła?</Link></p>
                             </div>
                         </form>
                     </div>

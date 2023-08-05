@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './Login.css'
 import { FaEnvelope } from 'react-icons/fa'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetPassword } from '../../actions/userActions'
 
@@ -10,18 +9,22 @@ import Message from '../../components/Message'
 
 function ResetPasswordScreen() {
     const [email, setEmail] = useState("")
-    const [requestSent, setRequestSent] = useState(false)
+    const [emailSent, setEmailSent] = useState(false)
 
     const dispatch = useDispatch()
 
     const userResetPassword = useSelector((state) => state.userResetPassword);
-    const { loading, error } = userResetPassword;
+    const { loading, error, success } = userResetPassword;
+
+    useEffect(() => {
+        if (success) {
+          setEmailSent(true);
+        }
+    }, [success]);
 
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log("Submit handler called with email:", email)
         dispatch(resetPassword(email))
-        setRequestSent(true)
     }
 
   return (
@@ -33,7 +36,7 @@ function ResetPasswordScreen() {
                         <form className="login-form-signin" onSubmit={submitHandler}>
                             <h2>Zresetuj hasło</h2>
                             {error && <Message>{error}</Message>}
-                            {requestSent && <Message>Link do resetowania hasła został wysłany na podany adres email.</Message>}
+                            {emailSent && <Message variant='info'>Link do resetowania hasła został wysłany na podany adres email.</Message>}
                             {loading && <Loader/>}
                             <div className="login-inputbox">
                                 <FaEnvelope className='icon'/>

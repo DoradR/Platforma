@@ -156,17 +156,17 @@ export const resetPasswordConfirm = (_id, token, new_password, re_new_password) 
             }
         }
     
-        const body = JSON.stringify({_id, token, new_password, re_new_password})
+        const data = { _id: _id, token: token, new_password: new_password, re_new_password: re_new_password }
 
-        const {data} = await axios.post(
+        const {data: responseData} = await axios.post(
             `${backendUrl}/api/users/reset-password-confirm/`,
+            data,
             configurations,
-            body
         )
 
         dispatch({
             type: USER_PASSWORD_RESET_CONFIRM_SUCCESS,
-            payload: data
+            payload: responseData
         })
         
     } catch (error) {

@@ -154,6 +154,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-from django.core.mail.backends.smtp import EmailBackend
-
 

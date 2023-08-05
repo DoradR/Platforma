@@ -14,6 +14,7 @@ from rest_framework.exceptions import ValidationError
 from base.serializers import UserSerializer, UserSerializerWithToken
 from django.core.mail import send_mail
 from django.conf import settings
+from ..config import config
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -62,33 +63,32 @@ def resetPassword(request):
     data = request.data
     email = data.get('email')
 
-    logger.debug(f"Email: {email}")
-
     try:
         user = MyUser.objects.get(email=email)
         logger.debug(f"User found: {user}")
+        # Generuj unikalny token do resetowania hasła
+        token = get_random_string(length=32)
+
+        # Zapisz token w polu reset_password_token w modelu użytkownika
+        user.reset_password_token = token
+        user.save()
+
+        # Wysyłka emaila z linkiem resetowania hasła
+        backend_url = config.get_backend_url()
+        reset_url = f"{backend_url}/reset-password/confirm/{user.id}/{token}/"
+        message = f"Kliknij w link, aby zresetować hasło: {reset_url}"
+        send_mail(
+            subject='Reset hasła',
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email],
+        )
+
+        return Response({'detail': 'Link do resetowania hasła został wysłany na podany adres email.'}, status=status.HTTP_200_OK)
+        
     except MyUser.DoesNotExist:
         logger.error("Podany adres email nie istnieje.")
         return Response({'detail': 'Podany adres email nie istnieje.'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Generuj unikalny token do resetowania hasła
-    token = get_random_string(length=32)
-
-    # Zapisz token w polu reset_password_token w modelu użytkownika
-    user.reset_password_token = token
-    user.save()
-
-    # Wysyłka emaila z linkiem resetowania hasła
-    reset_url = f"http://localhost:3000/reset-password/confirm/{user.id}/{token}/"
-    message = f"Kliknij w link, aby zresetować hasło: {reset_url}"
-    send_mail(
-        subject='Reset hasła',
-        message=message,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[email],
-    )
-
-    return Response({'detail': 'Link do resetowania hasła został wysłany na podany adres email.'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
