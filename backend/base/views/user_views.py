@@ -65,8 +65,7 @@ def resetPassword(request):
 
     try:
         user = MyUser.objects.get(email=email)
-        logger.debug(f"User found: {user}")
-        # Generuj unikalny token do resetowania hasła
+
         token = get_random_string(length=32)
 
         # Zapisz token w polu reset_password_token w modelu użytkownika
@@ -75,7 +74,7 @@ def resetPassword(request):
 
         # Wysyłka emaila z linkiem resetowania hasła
         backend_url = config.get_backend_url()
-        reset_url = f"{backend_url}/reset-password/confirm/{user.id}/{token}/"
+        reset_url = f"{backend_url}/reset-password-confirm/{user.id}/{token}/"
         message = f"Kliknij w link, aby zresetować hasło: {reset_url}"
         send_mail(
             subject='Reset hasła',
@@ -95,23 +94,23 @@ def resetPassword(request):
 @permission_classes([AllowAny])
 def resetPasswordConfirm(request):
     data = request.data
-    _id = data.get('_id')
+    id = data.get('id')
     token = data.get('token')
-    new_password = data.get('new_password')
-    re_new_password = data.get('re_new_password')
+    newPassword = data.get('newPassword')
+    reNewPassword = data.get('reNewPassword')
 
     try:
-        user = MyUser.objects.get(id=_id, reset_password_token=token)
+        user = MyUser.objects.get(id=id, reset_password_token=token)
     except MyUser.DoesNotExist:
         return Response({'detail': 'Nieprawidłowy token resetowania hasła.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    if new_password != re_new_password:
+    if newPassword != reNewPassword:
         return Response({'detail': 'Hasła się nie zgadzają.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Ustawienie nowego hasła
-    user.set_password(new_password)
+    user.set_password(newPassword)
     user.reset_password_token = None
     user.save()
+
 
     return Response({'detail': 'Hasło zostało zresetowane.'}, status=status.HTTP_200_OK)
 

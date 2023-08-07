@@ -96,15 +96,17 @@ export const userResetPasswordConfirmReducer = (state={}, action) =>{
         case USER_PASSWORD_RESET_CONFIRM_REQUEST:
             return {
                 loading: true,
+                success: false,
             }
         case USER_PASSWORD_RESET_CONFIRM_SUCCESS:
             return{
                 loading: false,
-                userInfo: action.payload
+                success: true,
             }
         case USER_PASSWORD_RESET_CONFIRM_FAIL:
             return{
                 loading:false,
+                success: false,
                 error: action.payload
             }
         default:

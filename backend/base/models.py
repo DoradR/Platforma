@@ -35,6 +35,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(auto_now_add=True)
 
+    reset_password_token = models.CharField(max_length=100, null=True, blank=True)
+
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './Login.css'
 import { FaEnvelope } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetPassword } from '../../actions/userActions'
 
@@ -51,6 +52,12 @@ function ResetPasswordScreen() {
                             </div>
 
                             <button className="login-button" type='submit'>Zresetuj hasło</button>
+                            <div className="login-second-option">
+                                <p><Link to='/login'>Zaloguj się</Link></p>
+                            </div>
+                            <div className="login-second-option">
+                                <p><Link to='/register'>Zarejestruj się</Link></p>
+                            </div>
                         </form>
                     </div>
                 </div>

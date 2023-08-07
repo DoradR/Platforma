@@ -143,7 +143,7 @@ export const resetPassword = (email) => async (dispatch) => {
     }
 }
 
-export const resetPasswordConfirm = (_id, token, new_password, re_new_password) => async (dispatch) => {
+export const resetPasswordConfirm = (id, token, newPassword, reNewPassword) => async (dispatch) => {
     try{
         dispatch({type: USER_PASSWORD_RESET_CONFIRM_REQUEST})
 
@@ -156,7 +156,7 @@ export const resetPasswordConfirm = (_id, token, new_password, re_new_password) 
             }
         }
     
-        const data = { _id: _id, token: token, new_password: new_password, re_new_password: re_new_password }
+        const data = { id: id, token: token, newPassword: newPassword, reNewPassword: reNewPassword }
 
         const {data: responseData} = await axios.post(
             `${backendUrl}/api/users/reset-password-confirm/`,
