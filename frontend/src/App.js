@@ -8,6 +8,8 @@ import RegisterScreen from './screens/login/RegisterScreen'
 import ResetPasswordScreen from './screens/login/ResetPasswordScreen'
 import ResetPasswordConfirmScreen from './screens/login/ResetPasswordConfirmScreen'
 
+import ProfileScreen from './screens/ProfileScreen'
+
 import ShopScreen from './screens/ShopScreen'
 import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
@@ -23,6 +25,8 @@ function App() {
             <Route path='/register' element={<RegisterScreen/>}/>
             <Route path='/reset-password' element = {<ResetPasswordScreen/>}/>
             <Route path='/reset-password-confirm/:id/:token' element = {<ResetPasswordConfirmScreen/>}/>
+            
+            <Route path='/profile' element={<ProfileScreen/>}/>
 
             <Route path='/shop' element={<ShopScreen/>} exact/>
             <Route path='/product/:id' element={<ProductScreen/>}/>

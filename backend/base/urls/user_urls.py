@@ -9,5 +9,6 @@ urlpatterns = [
     path('reset-password-confirm/', views.resetPasswordConfirm, name="reset-password-confirm"),
 
     path('profile/', views.getUserProfile, name="users-profile"),
+    path('profile/update/', views.updateUserProfile, name="users-profile-update"),
     path('', views.getUsers, name="users"),
 ]

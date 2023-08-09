@@ -81,7 +81,7 @@ function Header() {
                 </LinkContainer>
 
                 {userInfo ? (
-                  <NavDropdown title={userInfo.username} id='username' style={{textTransform:'uppercase'}} drop={'start'}>
+                  <NavDropdown title={(userInfo.first_name && userInfo.last_name) ? userInfo.name : userInfo.username} id='username' style={{textTransform:'uppercase'}} drop={'start'}>
 
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item>Profil</NavDropdown.Item>

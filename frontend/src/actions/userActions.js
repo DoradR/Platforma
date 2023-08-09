@@ -18,6 +18,10 @@ import {
     USER_PASSWORD_RESET_CONFIRM_REQUEST,
     USER_PASSWORD_RESET_CONFIRM_SUCCESS,
     USER_PASSWORD_RESET_CONFIRM_FAIL,
+
+    USER_DETAILS_REQUEST,
+    USER_DETAILS_SUCCESS,
+    USER_DETAILS_FAIL,
  } from '../constants/UserConstants'
 
 
@@ -172,6 +176,44 @@ export const resetPasswordConfirm = (id, token, newPassword, reNewPassword) => a
     } catch (error) {
         dispatch({
             type: USER_PASSWORD_RESET_CONFIRM_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+export const getUserDetails = (id) => async (dispatch, getState) => {
+    try{
+        dispatch({type: USER_DETAILS_REQUEST})
+
+        const env = process.env.NODE_ENV || 'development';
+        const backendUrl = config[env].backendUrl;
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const configurations = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const {data} = await axios.get(
+            `${backendUrl}/api/users/${id}/`,
+            configurations
+        )
+
+        dispatch({
+            type: USER_DETAILS_SUCCESS,
+            payload: data
+        })
+        
+    } catch (error) {
+        dispatch({
+            type: USER_DETAILS_FAIL,
             payload: error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message,
