@@ -88,19 +88,22 @@ function ProductScreen() {
                               <Row>
                                 <Col>Ilość</Col>
                                 <Col className=''>
-                                  <Form.Control
-                                    as='select'
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                  >
-                                    {
-                                      [...Array(product.countInStock).keys()].map((x) =>(
-                                        <option key={x+1} value={x+1}>
-                                          {x+1}
-                                        </option>
-                                      ))
-                                    }
-                                  </Form.Control>
+                                  <div className="quantity-input">
+                                    <input
+                                      type="number"
+                                      className="form-control"
+                                      value={quantity}
+                                      onChange={(e) => {
+                                        const newQuantity = Math.min(
+                                          Math.max(Number(e.target.value), 1),
+                                          product.countInStock
+                                        );
+                                        setQuantity(newQuantity);
+                                      }}
+                                      min="1"
+                                      max={product.countInStock}
+                                    />
+                                  </div>
                                 </Col>
                               </Row>
                             </ListGroup.Item>

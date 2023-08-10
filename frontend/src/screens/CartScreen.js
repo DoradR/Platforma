@@ -63,19 +63,22 @@ function CartScreen() {
                         </Col>
 
                         <Col md={3}>
-                          <Form.Control
-                            as='select'
-                            value={item.quantity}
-                            onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}
-                          >
-                            {
-                              [...Array(item.countInStock).keys()].map((x) =>(
-                                <option key={x+1} value={x+1}>
-                                  {x+1}
-                                </option>
-                              ))
-                            }
-                          </Form.Control>
+                          <div className="quantity-input">
+                            <input
+                              type="number"
+                              className="form-control"
+                              value={item.quantity}
+                              onChange={(e) => {
+                                const newQuantity = Math.min(
+                                  Math.max(Number(e.target.value), 1),
+                                  item.countInStock
+                                );
+                                dispatch(addToCart(item.product, newQuantity));
+                              }}
+                              min="1"
+                              max={item.countInStock}
+                            />
+                          </div>
                         </Col>
 
                         <Col md={1}>
