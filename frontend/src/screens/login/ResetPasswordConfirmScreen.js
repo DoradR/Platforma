@@ -12,6 +12,7 @@ function ResetPasswordConfirmScreen() {
     const [newPassword, setNewPassword] = useState("")
     const [reNewPassword, setReNewPassword] = useState("")
     const [message, setMessage] = useState("")
+    const [passwordIsValid, setPasswordIsValid] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -20,6 +21,22 @@ function ResetPasswordConfirmScreen() {
 
     const {id} = useParams()
     const {token} = useParams()
+
+    const validatePassword = (newPassword) => {
+        const hasLowerCase = /[a-z]/.test(newPassword)
+        const hasUpperCase = /[A-Z]/.test(newPassword)
+        const hasDigit = /\d/.test(newPassword)
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+
+        const isValid =
+            newPassword.length >= 10 &&
+            hasLowerCase &&
+            hasUpperCase &&
+            hasDigit &&
+            hasSpecialChar
+
+        setPasswordIsValid(isValid)
+    }
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -47,13 +64,16 @@ function ResetPasswordConfirmScreen() {
                                 <FaLock className='icon'/>
                                 <input 
                                     type="password" 
-                                    className="form-control" 
+                                    className={`form-control ${passwordIsValid ? 'valid' : 'invalid'}`}
                                     value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    onChange={(e) => {
+                                        setNewPassword(e.target.value)
+                                        validatePassword(e.target.value)
+                                    }}
                                     required
                                 />
                                 <label htmlFor="">Hasło</label>
-                            </div>  
+                            </div>
 
                             <div className="login-inputbox">
                                 <FaLock className='icon'/>
@@ -66,6 +86,12 @@ function ResetPasswordConfirmScreen() {
                                 />
                                 <label htmlFor="">Potwierdź Hasło</label>
                             </div>
+
+                            {!passwordIsValid && (
+                                <p className="password-validation-info">
+                                    Hasło musi zawierać co najmniej 10 znaków, w tym małą i dużą literę, cyfrę oraz znak specjalny.
+                                </p>
+                            )}
 
                             <button className="login-button" type='submit'>Ustaw nowe hasło</button>
                             <div className="login-second-option">

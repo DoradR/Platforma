@@ -15,6 +15,7 @@ function RegisterScreen() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [message, setMessage] = useState("")
+    const [passwordIsValid, setPasswordIsValid] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -25,6 +26,22 @@ function RegisterScreen() {
 
     const userRegister = useSelector(state => state.userRegister)
     const {loading, error, userInfo} = userRegister
+
+    const validatePassword = (password) => {
+        const hasLowerCase = /[a-z]/.test(password)
+        const hasUpperCase = /[A-Z]/.test(password)
+        const hasDigit = /\d/.test(password)
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+        const isValid =
+            password.length >= 10 &&
+            hasLowerCase &&
+            hasUpperCase &&
+            hasDigit &&
+            hasSpecialChar
+
+        setPasswordIsValid(isValid)
+    }
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -80,9 +97,12 @@ function RegisterScreen() {
                                 <FaLock className='icon'/>
                                 <input 
                                     type="password" 
-                                    className="form-control" 
+                                    className={`form-control ${passwordIsValid ? 'valid' : 'invalid'}`}
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value)
+                                        validatePassword(e.target.value)
+                                    }}
                                     required
                                 />
                                 <label htmlFor="">Hasło</label>
@@ -99,6 +119,12 @@ function RegisterScreen() {
                                 />
                                 <label htmlFor="">Potwierdź Hasło</label>
                             </div>
+
+                            {!passwordIsValid && (
+                                <p className="password-validation-info">
+                                    Hasło musi zawierać co najmniej 10 znaków, w tym małą i dużą literę, cyfrę oraz znak specjalny.
+                                </p>
+                            )}
 
                             <button className="login-button" type='submit'>Zarejestruj się</button>
 
