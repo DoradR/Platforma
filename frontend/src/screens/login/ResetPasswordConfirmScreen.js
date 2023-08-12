@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import './Login.css'
 import { Link, useParams } from 'react-router-dom'
 import { FaLock } from 'react-icons/fa'
@@ -46,6 +46,8 @@ function ResetPasswordConfirmScreen() {
         } else {
             dispatch(resetPasswordConfirm(id, token, newPassword, reNewPassword))
         }
+        setNewPassword("")
+        setReNewPassword("")
     }
 
   return (

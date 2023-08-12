@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams, useNavigate, createSearchParams } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card, Form } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { listProductDetails } from '../actions/productActions'
 

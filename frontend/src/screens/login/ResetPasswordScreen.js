@@ -26,6 +26,7 @@ function ResetPasswordScreen() {
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(resetPassword(email))
+        setEmail("")
     }
 
   return (

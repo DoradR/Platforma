@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react'
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../actions/cartActions'
-import { BsCartFill } from 'react-icons/bs'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
