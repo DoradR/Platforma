@@ -11,6 +11,7 @@ import {
     userResetPasswordReducer,
     userResetPasswordConfirmReducer,
     userDetailsReducer, 
+    userUpdateProfileReducer,
 } from './reducers/userReducers'
 
 
@@ -23,6 +24,7 @@ const reducer = combineReducers({
     userResetPassword: userResetPasswordReducer,
     userResetPasswordConfirm: userResetPasswordConfirmReducer,
     userDetails: userDetailsReducer,
+    userUpdateProfile: userUpdateProfileReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') 

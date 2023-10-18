@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { Row, Col, FormGroup, Form } from 'react-bootstrap'
+import { Row, Col, FormGroup, Form, Button } from 'react-bootstrap'
 import { FaLock, FaEnvelope, FaUser } from 'react-icons/fa'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile, } from '../actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
@@ -11,7 +12,6 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 
 function ProfileScreen() {
-    const [username, setUsername] = useState("")
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
@@ -29,13 +29,23 @@ function ProfileScreen() {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const { success } = userUpdateProfile
+
     const submitHandler = (e) => {
         e.preventDefault()
         
         if(password !== confirmPassword){
             setMessage('Hasła nie są takie same')
         } else {
-            console.log('Updating..')
+            dispatch(updateUserProfile({
+                'id':user._id,
+                'first_name':firstname,
+                'last_name':lastname,
+                'email':email,
+                'password':password
+            }))
+            setMessage("")
         }
     }
 
@@ -43,23 +53,27 @@ function ProfileScreen() {
         if(!userInfo){
             navigate('/login')
         }else{
-            if(!user || !user.name){
+            if(!user || !user.name || success){
+                dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
             }else{
                 setFirstname(user.first_name)
                 setLastname(user.last_name)
                 setEmail(user.email)
+                setPassword("")
+                setConfirmPassword("")
             }
         }
-    }, [dispatch, navigate, userInfo, user])
+    }, [dispatch, navigate, userInfo, user, success])
   return (
     <div>
         <Header/>
             <div className='p-3'>
-                <Row>
+                <Row className='shopscreen-row'>
                     <Col md={3}>
                         <h2>Profil użytkownika</h2>
                         {message && <Message>{message}</Message>}
+                        {success && window.alert("Dane użytkownika zostały zaaktualizowane.")}
                         {error && <Message>{error}</Message>}
                         {loading && <Loader/>}
                         <Form onSubmit={submitHandler}>
@@ -120,6 +134,10 @@ function ProfileScreen() {
                                 >
                                 </Form.Control>
                             </FormGroup>
+
+                            <Button className='profile-button' type='submit' variant='secondary'>
+                                Update
+                            </Button>
                         </Form>
                     </Col>
                     <Col md={9}>

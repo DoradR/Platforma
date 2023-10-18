@@ -57,3 +57,7 @@ main{
 .link-in-link:hover{
     text-decoration: underline;
 }
+
+.profile-button{
+    margin-top: 20px;
+}
