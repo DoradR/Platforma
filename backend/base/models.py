@@ -43,7 +43,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return self.email
+        return self.email 
 
 
 class Product(models.Model):
@@ -60,7 +60,9 @@ class Product(models.Model):
         max_digits=7, decimal_places=2, null=True, blank=True)
     countInStock = models.IntegerField(null=True, blank=True, default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
+    _id = models.AutoField(primary_key=True, editable=False)\
+    
+    video_course = models.OneToOneField("VideoCourse", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -94,6 +96,19 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.createdAt)
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.products.exists() and self.products.first().video_course:
+            self.user.video_courses.add(self.products.first().video_course)
+    
+
+class VideoCourse(models.Model):
+    name = models.CharField(max_length=256, null=True, blank=True)
+    video_file = models.FileField(upload_to='videos/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class OrderItem(models.Model):
