@@ -58,7 +58,7 @@ function CartScreen() {
                         </Col>
 
                         <Col md={2}>
-                          <strong>${item.price}</strong>
+                          <strong>{item.price}zł</strong>
                         </Col>
 
                         <Col md={3}>
@@ -99,8 +99,8 @@ function CartScreen() {
               <Card>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
-                    <h2>Suma częściowa {cartItems.reduce((acc, item) => acc + item.quantity, 0)} przedmiotów:</h2>
-                    <h3><strong>${cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}</strong></h3>
+                    <h2>Suma łączna {cartItems.reduce((acc, item) => acc + item.quantity, 0)} przedmiotów:</h2>
+                    <h3><strong>{cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}zł</strong></h3>
                   </ListGroup.Item>
 
                   <ListGroup.Item>
