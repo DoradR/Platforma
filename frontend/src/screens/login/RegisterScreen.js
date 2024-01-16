@@ -27,12 +27,12 @@ function RegisterScreen() {
     const userRegister = useSelector(state => state.userRegister)
     const {loading, error, userInfo} = userRegister
 
-    const validatePassword = (password) => {
-        const hasLowerCase = /[a-z]/.test(password)
-        const hasUpperCase = /[A-Z]/.test(password)
-        const hasDigit = /\d/.test(password)
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    const hasLowerCase = /[a-z]/.test(password)
+    const hasUpperCase = /[A-Z]/.test(password)
+    const hasDigit = /\d/.test(password)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
 
+    const validatePassword = (password) => {
         const isValid =
             password.length >= 10 &&
             hasLowerCase &&
@@ -58,6 +58,10 @@ function RegisterScreen() {
             navigate(redirect)
         }
     }, [navigate, userInfo, redirect])
+
+    const getClassForValidation = (isValid) => {
+        return isValid ? 'password-validation-good' : 'password-validation-info';
+    };
   return (
     <div className='container'>
         <main className="body-login">
@@ -78,7 +82,7 @@ function RegisterScreen() {
                                     onChange={(e) => setUsername(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="">Nazwa użytkownika</label>
+                                <label>Nazwa użytkownika</label>
                             </div>
 
                             <div className="login-inputbox">
@@ -90,7 +94,7 @@ function RegisterScreen() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="">Email</label>
+                                <label>Email</label>
                             </div>
 
                             <div className="login-inputbox">
@@ -105,7 +109,7 @@ function RegisterScreen() {
                                     }}
                                     required
                                 />
-                                <label htmlFor="">Hasło</label>
+                                <label>Hasło</label>
                             </div>  
 
                             <div className="login-inputbox">
@@ -117,13 +121,17 @@ function RegisterScreen() {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="">Potwierdź Hasło</label>
+                                <label>Potwierdź Hasło</label>
                             </div>
 
                             {!passwordIsValid && (
-                                <p className="password-validation-info">
-                                    Hasło musi zawierać co najmniej 10 znaków, w tym małą i dużą literę, cyfrę oraz znak specjalny.
-                                </p>
+                                <ul>
+                                    <li className={getClassForValidation(password.length >= 10)}>Musi być dłuższe niż 10 znaków</li>
+                                    <li className={getClassForValidation(hasLowerCase)}>Musi zawierać małą literę</li>
+                                    <li className={getClassForValidation(hasUpperCase)}>Musi zawierać dużą literę</li>
+                                    <li className={getClassForValidation(hasDigit)}>Musi zawierać cyfrę</li>
+                                    <li className={getClassForValidation(hasSpecialChar)}>Musi zawierać znak specjalny</li>
+                                </ul>
                             )}
 
                             <button className="login-button" type='submit'>Zarejestruj się</button>

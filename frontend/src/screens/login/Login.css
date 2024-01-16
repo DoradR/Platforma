@@ -31,7 +31,7 @@
 .login-form-box-register{
     position: relative;
     width: 400px;
-    height: 600px;
+    height: 630px;
     background: transparent;
     border: 2px solid rgba(255,255,255,0.5);
     border-radius: 20px;
@@ -114,14 +114,16 @@ top: -5px;
 .login-second-option p a:hover{
     text-decoration: underline;
 }
-.valid {
-    border-color: green; /* lub dowolny inny styl dla poprawnego hasła */
-}
-.invalid {
-    border-color: red; /* lub dowolny inny styl dla niepoprawnego hasła */
-}
-.password-validation-info {
+
+.password-validation-info,
+.password-validation-good {
     font-size: 12px;
-    color: red;
-    margin: 20px;
+}
+
+.password-validation-info {
+    color: tomato;
+}
+
+.password-validation-good {
+    color: lime;
 }
