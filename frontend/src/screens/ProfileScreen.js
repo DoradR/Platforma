@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserProfile, } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
 
+
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Loader from '../components/Loader'
@@ -17,6 +18,7 @@ function ProfileScreen() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [passwordIsValid, setPasswordIsValid] = useState(false)
     const [message, setMessage] = useState("")
 
     const dispatch = useDispatch()
@@ -31,6 +33,22 @@ function ProfileScreen() {
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
+
+    const hasLowerCase = /[a-z]/.test(password)
+    const hasUpperCase = /[A-Z]/.test(password)
+    const hasDigit = /\d/.test(password)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+    const validatePassword = (password) => {
+        const isValid =
+            password.length >= 10 &&
+            hasLowerCase &&
+            hasUpperCase &&
+            hasDigit &&
+            hasSpecialChar
+
+        setPasswordIsValid(isValid)
+    }
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -65,6 +83,11 @@ function ProfileScreen() {
             }
         }
     }, [dispatch, navigate, userInfo, user, success])
+
+    const getClassForValidation = (isValid) => {
+        return isValid ? 'password-validation-good' : 'password-validation-info';
+    }
+
   return (
     <div>
         <Header/>
@@ -76,10 +99,11 @@ function ProfileScreen() {
                         {success && window.alert("Dane użytkownika zostały zaaktualizowane.")}
                         {error && <Message>{error}</Message>}
                         {loading && <Loader/>}
-                        <Form onSubmit={submitHandler}>
+                        <Form onSubmit={submitHandler} className='list-of-forms-from-profile-screen'>
                             <FormGroup controlId='firstname'>
                                 <Form.Label>Imię</Form.Label>
                                 <Form.Control
+                                    className='form-from-profile-screen'
                                     required
                                     type='text'
                                     placeholder='Wprowadz imię'
@@ -92,6 +116,7 @@ function ProfileScreen() {
                             <FormGroup controlId='lastname'>
                                 <Form.Label>Nazwisko</Form.Label>
                                 <Form.Control
+                                    className='form-from-profile-screen'
                                     required
                                     type='text'
                                     placeholder='Wprowadz nazwisko'
@@ -104,6 +129,7 @@ function ProfileScreen() {
                             <FormGroup controlId='email'>
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
+                                    className='form-from-profile-screen'
                                     required
                                     type='email'
                                     placeholder='Wprowadz email'
@@ -116,6 +142,7 @@ function ProfileScreen() {
                             <FormGroup controlId='password'>
                                 <Form.Label>Hasło</Form.Label>
                                 <Form.Control
+                                    className='form-from-profile-screen'
                                     type='password'
                                     placeholder='Wprowadz hasło'
                                     value={password}
@@ -124,9 +151,10 @@ function ProfileScreen() {
                                 </Form.Control>
                             </FormGroup>
 
-                            <FormGroup controlId='passwordConfirm'>
+                            <FormGroup controlId='passwordConfirm' style={{marginBottom: '20px'}}>
                                 <Form.Label>Potwierdź hasło</Form.Label>
                                 <Form.Control
+                                    className='form-from-profile-screen'
                                     type='password'
                                     placeholder='Potwierdź hasło'
                                     value={confirmPassword}
@@ -134,6 +162,16 @@ function ProfileScreen() {
                                 >
                                 </Form.Control>
                             </FormGroup>
+
+                            {!passwordIsValid && (
+                                <ul>
+                                    <li className={getClassForValidation(password.length >= 10)}>Musi być dłuższe niż 10 znaków</li>
+                                    <li className={getClassForValidation(hasLowerCase)}>Musi zawierać małą literę</li>
+                                    <li className={getClassForValidation(hasUpperCase)}>Musi zawierać dużą literę</li>
+                                    <li className={getClassForValidation(hasDigit)}>Musi zawierać cyfrę</li>
+                                    <li className={getClassForValidation(hasSpecialChar)}>Musi zawierać znak specjalny</li>
+                                </ul>
+                            )}
 
                             <Button className='profile-button' type='submit' variant='secondary'>
                                 Update

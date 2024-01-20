@@ -61,7 +61,7 @@ function RegisterScreen() {
 
     const getClassForValidation = (isValid) => {
         return isValid ? 'password-validation-good' : 'password-validation-info';
-    };
+    }
   return (
     <div className='container'>
         <main className="body-login">

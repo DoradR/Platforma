@@ -61,3 +61,8 @@ main{
 .profile-button{
     margin-top: 20px;
 }
+
+.form-from-profile-screen {
+    background: #2387a0;
+    color: white;
+}

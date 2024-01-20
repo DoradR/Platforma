@@ -21,13 +21,13 @@ function ResetPasswordConfirmScreen() {
 
     const {id} = useParams()
     const {token} = useParams()
+    
+    const hasLowerCase = /[a-z]/.test(newPassword)
+    const hasUpperCase = /[A-Z]/.test(newPassword)
+    const hasDigit = /\d/.test(newPassword)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
 
     const validatePassword = (newPassword) => {
-        const hasLowerCase = /[a-z]/.test(newPassword)
-        const hasUpperCase = /[A-Z]/.test(newPassword)
-        const hasDigit = /\d/.test(newPassword)
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
-
         const isValid =
             newPassword.length >= 10 &&
             hasLowerCase &&
@@ -48,6 +48,10 @@ function ResetPasswordConfirmScreen() {
         }
         setNewPassword("")
         setReNewPassword("")
+    }
+
+    const getClassForValidation = (isValid) => {
+        return isValid ? 'password-validation-good' : 'password-validation-info';
     }
 
   return (
@@ -90,9 +94,13 @@ function ResetPasswordConfirmScreen() {
                             </div>
 
                             {!passwordIsValid && (
-                                <p className="password-validation-info">
-                                    Hasło musi zawierać co najmniej 10 znaków, w tym małą i dużą literę, cyfrę oraz znak specjalny.
-                                </p>
+                                <ul>
+                                    <li className={getClassForValidation(newPassword.length >= 10)}>Musi być dłuższe niż 10 znaków</li>
+                                    <li className={getClassForValidation(hasLowerCase)}>Musi zawierać małą literę</li>
+                                    <li className={getClassForValidation(hasUpperCase)}>Musi zawierać dużą literę</li>
+                                    <li className={getClassForValidation(hasDigit)}>Musi zawierać cyfrę</li>
+                                    <li className={getClassForValidation(hasSpecialChar)}>Musi zawierać znak specjalny</li>
+                                </ul>
                             )}
 
                             <button className="login-button" type='submit'>Ustaw nowe hasło</button>
