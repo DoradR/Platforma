@@ -173,7 +173,7 @@ function ProfileScreen() {
                                 </ul>
                             )}
 
-                            <Button className='profile-button' type='submit' variant='secondary'>
+                            <Button className='btn-info' type='submit' variant='secondary'>
                                 Update
                             </Button>
                         </Form>
