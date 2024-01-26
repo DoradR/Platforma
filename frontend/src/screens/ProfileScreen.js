@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col, FormGroup, Form, Button } from 'react-bootstrap'
 import { FaLock, FaEnvelope, FaUser } from 'react-icons/fa'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserProfile, } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
@@ -39,32 +39,46 @@ function ProfileScreen() {
     const hasDigit = /\d/.test(password)
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
 
+    const submitHandler = (e) => {
+        e.preventDefault();
+    
+        let messageText = '';
+        let messageVariant = 'info';
+    
+        if (password !== confirmPassword) {
+            messageText = 'Hasła nie są takie same';
+            messageVariant = 'danger';
+        } else if (!validatePassword(password)) {
+            messageText = 'Hasło jest za słabe. Sprawdź warunki walidacji.';
+            messageVariant = 'danger';
+        } else {
+            dispatch(updateUserProfile({
+                'id': user._id,
+                'first_name': firstname,
+                'last_name': lastname,
+                'email': email,
+                'password': password
+            }));
+            messageText = 'Pomyślnie zaaktualizowano dane użytkownika.';
+        }
+    
+        setMessage({ text: messageText, variant: messageVariant });
+        
+        setTimeout(() => {
+            setMessage(null);
+        }, 5000);
+    }
+
     const validatePassword = (password) => {
         const isValid =
             password.length >= 10 &&
-            hasLowerCase &&
-            hasUpperCase &&
-            hasDigit &&
-            hasSpecialChar
-
-        setPasswordIsValid(isValid)
-    }
-
-    const submitHandler = (e) => {
-        e.preventDefault()
-        
-        if(password !== confirmPassword){
-            setMessage('Hasła nie są takie same')
-        } else {
-            dispatch(updateUserProfile({
-                'id':user._id,
-                'first_name':firstname,
-                'last_name':lastname,
-                'email':email,
-                'password':password
-            }))
-            setMessage("")
-        }
+            /[a-z]/.test(password) &&
+            /[A-Z]/.test(password) &&
+            /\d/.test(password) &&
+            /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+        setPasswordIsValid(isValid);
+        return isValid;
     }
 
     useEffect(() => {
@@ -95,8 +109,7 @@ function ProfileScreen() {
                 <Row className='shopscreen-row'>
                     <Col md={3}>
                         <h2>Profil użytkownika</h2>
-                        {message && <Message>{message}</Message>}
-                        {success && window.alert("Dane użytkownika zostały zaaktualizowane.")}
+                        {message && <Message variant={message.variant} dismissable>{message.text}</Message>}
                         {error && <Message>{error}</Message>}
                         {loading && <Loader/>}
                         <Form onSubmit={submitHandler} className='list-of-forms-from-profile-screen'>
@@ -146,8 +159,13 @@ function ProfileScreen() {
                                     type='password'
                                     placeholder='Wprowadz hasło'
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => {
+                                        console.log(passwordIsValid)
+                                        setPassword(e.target.value)
+                                        validatePassword(e.target.value)
+                                    }}
                                 >
+                                    
                                 </Form.Control>
                             </FormGroup>
 

@@ -45,7 +45,6 @@ function RegisterScreen() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        
         if(password !== confirmPassword){
             setMessage('Hasła nie są takie same')
         } else {

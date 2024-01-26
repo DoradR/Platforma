@@ -33,6 +33,23 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+def validate_password(password):
+    if len(password) < 10:
+        raise ValidationError('Hasło musi zawierać co najmniej 10 znaków.')
+
+    if not any(char.isdigit() for char in password):
+        raise ValidationError('Hasło musi zawierać co najmniej jedną cyfrę.')
+
+    if not any(char.islower() for char in password):
+        raise ValidationError('Hasło musi zawierać co najmniej jedną małą literę.')
+
+    if not any(char.isupper() for char in password):
+        raise ValidationError('Hasło musi zawierać co najmniej jedną dużą literę.')
+
+    if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
+        raise ValidationError('Hasło musi zawierać co najmniej jeden znak specjalny.')
+
+
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -46,20 +63,7 @@ def registerUser(request):
     if MyUser.objects.filter(email=email).exists():
         raise ValidationError('Email jest już zajęty')
     
-    if len(password) < 10:
-        raise ValidationError('Hasło musi zawierać co najmniej 10 znaków.')
-    
-    if not any(char.isdigit() for char in password):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną cyfrę.')
-    
-    if not any(char.islower() for char in password):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną małą literę.')
-    
-    if not any(char.isupper() for char in password):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną dużą literę.')
-    
-    if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
-        raise ValidationError('Hasło musi zawierać co najmniej jeden znak specjalny.')
+    validate_password(password)
     
     user = MyUser.objects.create(
         username=username,
@@ -120,20 +124,7 @@ def resetPasswordConfirm(request):
     except MyUser.DoesNotExist:
         return Response({'detail': 'Nieprawidłowy token resetowania hasła.'}, status=status.HTTP_400_BAD_REQUEST)
     
-    if len(newPassword) < 10:
-        raise ValidationError('Hasło musi zawierać co najmniej 10 znaków.')
-    
-    if not any(char.isdigit() for char in newPassword):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną cyfrę.')
-    
-    if not any(char.islower() for char in newPassword):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną małą literę.')
-    
-    if not any(char.isupper() for char in newPassword):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną dużą literę.')
-    
-    if not re.search("[!@#$%^&*(),.?\":{}|<>]", newPassword):
-        raise ValidationError('Hasło musi zawierać co najmniej jeden znak specjalny.')
+    validate_password(newPassword)
 
     if newPassword != reNewPassword:
         return Response({'detail': 'Hasła się nie zgadzają.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -165,7 +156,8 @@ def updateUserProfile(request):
     user.last_name = data['last_name']
     user.email = data['email']
 
-    if data['password'] != '':
+    if 'password' in data and data['password'] != '':
+        validate_password(data['password'])
         user.password = make_password(data['password'])
 
     user.save()
