@@ -11,17 +11,17 @@ function Footer() {
       <div className="footer__addr">
         <h1 className="footer__logo"></h1>
         <div className='copy'>
-            <p>Copyright &copy; Fuchscentrum</p>
+            <p>Copyright &copy; #</p>
         </div>
       </div>
       <ul className="footer__nav">
         <li className="nav__item">
           <ul className="nav__ul">
             <li>
-              <a href="#">Email: fuchscentrum@gmail.com</a>
+              <a href="#">Email: #</a>
             </li>
             <li>
-              <a href="#">Tel.: +48 781 633 766</a>
+              <a href="#">Tel.: #</a>
             </li>
           </ul>
         </li>
