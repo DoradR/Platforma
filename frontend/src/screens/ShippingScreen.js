@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import { Form, Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap"
+import React, {useState} from 'react'
+import { Form, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,11 +19,11 @@ function ShippingScreen() {
     const [address, setAddress] = useState(shippingAddress.address)
     const [city, setCity] = useState(shippingAddress.city)
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
-    const [country, setCountry] = useState(shippingAddress.country)
+    // const [country, setCountry] = useState(shippingAddress.country)
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(saveShippingAddress({address, city, postalCode, country}))
+        dispatch(saveShippingAddress({address, city, postalCode}))
         navigate('/payment')
     }
   return (
@@ -67,7 +67,7 @@ function ShippingScreen() {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId='country'>
+                {/* <Form.Group controlId='country'>
                     <Form.Label>Państwo</Form.Label>
                     <Form.Control
                         required
@@ -77,7 +77,7 @@ function ShippingScreen() {
                         onChange={(e) => setCountry(e.target.value)}
                     >
                     </Form.Control>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Button
                       type='submit'

@@ -1,7 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
+
+import { createOrder } from '../actions/orderActions'
+import { ORDER_CREATE_RESET } from '../constants/OrderConstants'
 
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
@@ -9,15 +12,38 @@ import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 
 function PlaceorderScreen() {
+    const orderCreate = useSelector(state => state.orderCreate)
+    const {order, error, success} = orderCreate
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const cart = useSelector(state => state.cart)
 
-    cart.allCourses = cart.cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)
+    cart.coursesPrice = cart.cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)
     cart.promotion = 10
 
-    cart.total = (cart.allCourses * Number(1 - cart.promotion/100)).toFixed(2)
+    cart.totalPrice = (cart.coursesPrice * Number(1 - cart.promotion/100)).toFixed(2)
+
+    if(!cart.paymentMethod){
+        navigate('/payment')
+    }
+
+    useEffect(() => {
+        if(success){
+            navigate(`/order/${order._id}`)
+            dispatch({type: ORDER_CREATE_RESET})
+        }
+    }, [success, navigate])
 
     const placeOrder = () => {
-        console.log('Klikniety')
+        dispatch(createOrder({
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
+            coursesPrice: cart.coursesPrice,
+            promotion: cart.promotion,
+            totalPrice: cart.totalPrice
+        }))
     }
   return (
     <div>
@@ -33,8 +59,8 @@ function PlaceorderScreen() {
                                 {cart.shippingAddress.address}, {cart.shippingAddress.city}
                                 {'   '}
                                 {cart.shippingAddress.postalCode}
-                                {'   '}
-                                {cart.shippingAddress.country}
+                                {/* {'   '} */}
+                                {/* {cart.shippingAddress.country} */}
                             </p>
                         </ListGroup.Item>
                         
@@ -83,7 +109,7 @@ function PlaceorderScreen() {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Kursy: </Col>
-                                    <Col>{cart.allCourses}zł</Col>
+                                    <Col>{cart.coursesPrice}zł</Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -97,8 +123,12 @@ function PlaceorderScreen() {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Łącznie: </Col>
-                                    <Col>{cart.total}zł</Col>
+                                    <Col>{cart.totalPrice}zł</Col>
                                 </Row>
+                            </ListGroup.Item>
+
+                            <ListGroup.Item>
+                                {error && <Message variant='danger'>{error}</Message>}
                             </ListGroup.Item>
 
                             <ListGroup.Item>
