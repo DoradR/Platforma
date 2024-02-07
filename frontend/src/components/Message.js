@@ -7,12 +7,14 @@ function Message({ variant, children, dismissable = false }) {
 
   useEffect(() => {
     setMessage(children);
-    const timer = setTimeout(() => {
-      setShow(false);
-    }, 5000);
+    if (!dismissable) {
+      const timer = setTimeout(() => {
+        setShow(false);
+      }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [children]);
+      return () => clearTimeout(timer);
+    }
+  }, [children, dismissable]);
 
   return (
     <>
@@ -20,8 +22,7 @@ function Message({ variant, children, dismissable = false }) {
         <Alert
           variant={variant}
           style={{ margin: '30px' }}
-          dismissible={dismissable}
-          onClose={() => setShow(false)}
+          dismissible={false} // Ustawiamy dismissible na false, aby nie pokazywać przycisku zamykania, niezależnie od wartości dismissable
         >
           {message}
         </Alert>
