@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { Row, Col, FormGroup, Form, Button } from 'react-bootstrap'
-import { FaLock, FaEnvelope, FaUser } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { Row, Col, FormGroup, Form, Button, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { FaX } from 'react-icons/fa6'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserProfile, } from '../actions/userActions'
+import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
 
 
@@ -33,6 +35,9 @@ function ProfileScreen() {
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
+
+    const orderListMy = useSelector(state => state.orderListMy)
+    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
     const hasLowerCase = /[a-z]/.test(password)
     const hasUpperCase = /[A-Z]/.test(password)
@@ -88,6 +93,7 @@ function ProfileScreen() {
             if(!user || !user.name || success){
                 dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
+                dispatch(listMyOrders())
             }else{
                 setFirstname(user.first_name)
                 setLastname(user.last_name)
@@ -198,6 +204,48 @@ function ProfileScreen() {
                     </Col>
                     <Col md={9}>
                         <h2>Moje zamówienia</h2>
+                        {loadingOrders ? (
+                            <Loader/>
+                        ) : errorOrders ? (
+                            <Message variant='danger'>{errorOrders}</Message>
+                        ) : (
+                            <Table
+                                striped
+                                responsive
+                                className='table-sm'
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Dzień</th>
+                                        <th>Kwota</th>
+                                        <th>Zapłacone</th>
+                                        <th>Dostarczone</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders.map(order => (
+                                        <tr key={order._id}>
+                                            <td>{order._id}</td>
+                                            <td>{order.createdAt.substring(0,10)}</td>
+                                            <td>{order.totalPrice}zł</td>
+                                            <td>{order.isPaid ? order.paidAt.substring(0,10) : (
+                                                <FaX style={{'color': 'red'}}/>
+                                            )}</td>
+                                            <td>{order.isSended ? order.sendedAt.substring(0,10) : (
+                                                <FaX style={{'color': 'red'}}/>
+                                            )}</td>
+                                            <td>
+                                                <LinkContainer to={`/order/${order._id}`}>
+                                                    <Button className='btn-info' type='submit' variant='secondary'>Szczegóły</Button>
+                                                </LinkContainer>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        )}
                     </Col>
                 </Row>
             </div>

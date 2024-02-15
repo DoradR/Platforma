@@ -8,6 +8,7 @@ from base.models import Product, Order, OrderItem, DeliveryAddress
 from base.serializers import ProductSerializer, OrderSerializer
 
 from rest_framework import status
+from datetime import datetime
 
 
 @api_view(['POST'])
@@ -69,3 +70,24 @@ def getOrderById(request, pk):
                 {'detail': 'Nieautoryzowany użytkownik do wyświetlenia zamówienia.'}, status=status.HTTP_401_UNAUTHORIZED)
     except:
         return Response({'detail': 'Zamówienie nie istnieje.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    order = Order.objects.get(_id=pk)
+
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Zamówienie opłacone.')
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOrders(request):
+    user = request.user
+    orders = user.order_set.all()
+
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
