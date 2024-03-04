@@ -28,6 +28,19 @@ import {
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_FAIL,
     // USER_UPDATE_PROFILE_RESET,
+
+    USERS_LIST_REQUEST,
+    USERS_LIST_SUCCESS,
+    USERS_LIST_FAIL,
+    USERS_LIST_RESET,
+
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL,
+
+    USER_UPDATE_REQUEST,
+    USER_UPDATE_SUCCESS,
+    USER_UPDATE_FAIL,
  } from '../constants/UserConstants'
 
  import { ORDER_LIST_MY_RESET } from '../constants/OrderConstants'
@@ -75,6 +88,7 @@ export const logout = () => (dispatch) => {
     dispatch({type: USER_LOGOUT})
     dispatch({type: USER_DETAILS_RESET})
     dispatch({type: ORDER_LIST_MY_RESET})
+    dispatch({type: USERS_LIST_RESET})
 }
 
 
@@ -268,9 +282,130 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         localStorage.setItem('userInfo', JSON.stringify(data))
         
     } catch (error) {
-        console.error("Błąd podczas aktualizacji profilu:", error)
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+export const listUsers = () => async (dispatch, getState) => {
+    try{
+        dispatch({type: USERS_LIST_REQUEST})
+
+        const env = process.env.NODE_ENV || 'development';
+        const backendUrl = config[env].backendUrl;
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const configurations = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const {data} = await axios.get(
+            `${backendUrl}/api/users/`,
+            configurations
+        )
+
+        dispatch({
+            type: USERS_LIST_SUCCESS,
+            payload: data
+        })
+
+        
+    } catch (error) {
+        dispatch({
+            type: USERS_LIST_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+    try{
+        dispatch({type: USER_DELETE_REQUEST})
+
+        const env = process.env.NODE_ENV || 'development';
+        const backendUrl = config[env].backendUrl;
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const configurations = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const {data} = await axios.delete(
+            `${backendUrl}/api/users/delete/${id}/`,
+            configurations
+        )
+
+        dispatch({
+            type: USER_DELETE_SUCCESS,
+            payload: data
+        })
+
+        
+    } catch (error) {
+        dispatch({
+            type: USER_DELETE_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+export const updateUser = (user) => async (dispatch, getState) => {
+    try{
+        dispatch({type: USER_UPDATE_REQUEST})
+
+        const env = process.env.NODE_ENV || 'development';
+        const backendUrl = config[env].backendUrl;
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const configurations = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const {data} = await axios.put(
+            `${backendUrl}/api/users/update/${user._id}/`,
+            user,
+            configurations
+        )
+
+        dispatch({
+            type: USER_UPDATE_SUCCESS,
+        })
+
+        dispatch({
+            type: USER_DETAILS_SUCCESS,
+            payload: data
+        })
+
+        
+    } catch (error) {
+        dispatch({
+            type: USER_UPDATE_FAIL,
             payload: error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message,

@@ -4,8 +4,9 @@ import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import logo from './logo.png'
 import './Header.css'
-import { FaUserCircle } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa'
 import { BsCartFill } from 'react-icons/bs'
+import { RiAdminFill } from 'react-icons/ri'
 import { logout } from '../../actions/userActions'
 
 function Header() {
@@ -76,12 +77,32 @@ function Header() {
                 </NavDropdown>
                 </Nav>
                 <Nav>
-                <LinkContainer to='/cart'>
-                  <Nav.Link><BsCartFill/> KOSZYK</Nav.Link>
+
+                {userInfo && userInfo.isAdmin && (
+                  <NavDropdown title={(<RiAdminFill/>)} id='adminmenu' style={{textTransform:'uppercase', fontSize:'2.5rem'}} drop={'start'}>
+
+                    <LinkContainer to='/admin/userlist'>
+                      <NavDropdown.Item>Użytkownicy</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to='/admin/productlist'>
+                      <NavDropdown.Item>Produkty</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to='/admin/orderlist'>
+                      <NavDropdown.Item>Zamówienia</NavDropdown.Item>
+                    </LinkContainer>
+
+                  </NavDropdown>
+                )}
+
+                <LinkContainer to='/cart' style={{display: 'flex', alignItems: 'center'}}>
+                  <Nav.Link><BsCartFill style={{fontSize:'2.5rem'}}/></Nav.Link>
                 </LinkContainer>
+                
 
                 {userInfo ? (
-                  <NavDropdown title={(userInfo.first_name && userInfo.last_name) ? userInfo.name : userInfo.username} id='username' style={{textTransform:'uppercase'}} drop={'start'}>
+                  <NavDropdown title={(<FaUser/>)} id='username' style={{textTransform:'uppercase', fontSize:'2.5rem'}} drop={'start'}>
 
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item>Profil</NavDropdown.Item>
@@ -92,7 +113,7 @@ function Header() {
                   </NavDropdown>
                 ): (
                   <LinkContainer to='/login'>
-                    <Nav.Link><FaUserCircle/> ZALOGUJ SIĘ</Nav.Link>
+                    <Nav.Link><FaUser style={{fontSize:'2.5rem'}}/> ZALOGUJ SIĘ</Nav.Link>
                   </LinkContainer>
                 )}
               </Nav>

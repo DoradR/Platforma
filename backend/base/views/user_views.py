@@ -1,3 +1,4 @@
+import logging
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -16,6 +17,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from ..config import config
 import re
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -41,13 +43,16 @@ def validate_password(password):
         raise ValidationError('Hasło musi zawierać co najmniej jedną cyfrę.')
 
     if not any(char.islower() for char in password):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną małą literę.')
+        raise ValidationError(
+            'Hasło musi zawierać co najmniej jedną małą literę.')
 
     if not any(char.isupper() for char in password):
-        raise ValidationError('Hasło musi zawierać co najmniej jedną dużą literę.')
+        raise ValidationError(
+            'Hasło musi zawierać co najmniej jedną dużą literę.')
 
     if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
-        raise ValidationError('Hasło musi zawierać co najmniej jeden znak specjalny.')
+        raise ValidationError(
+            'Hasło musi zawierać co najmniej jeden znak specjalny.')
 
 
 @api_view(['POST'])
@@ -59,12 +64,12 @@ def registerUser(request):
 
     if MyUser.objects.filter(username=username).exists():
         raise ValidationError('Nazwa użytkownika jest już zajęta')
-    
+
     if MyUser.objects.filter(email=email).exists():
         raise ValidationError('Email jest już zajęty')
-    
+
     validate_password(password)
-    
+
     user = MyUser.objects.create(
         username=username,
         email=email,
@@ -73,9 +78,9 @@ def registerUser(request):
     serializer = UserSerializerWithToken(user, many=False)
     return Response(serializer.data)
 
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -104,7 +109,7 @@ def resetPassword(request):
         )
 
         return Response({'detail': 'Link do resetowania hasła został wysłany na podany adres email.'}, status=status.HTTP_200_OK)
-        
+
     except MyUser.DoesNotExist:
         logger.error("Podany adres email nie istnieje.")
         return Response({'detail': 'Podany adres email nie istnieje.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -123,7 +128,7 @@ def resetPasswordConfirm(request):
         user = MyUser.objects.get(id=id, reset_password_token=token)
     except MyUser.DoesNotExist:
         return Response({'detail': 'Nieprawidłowy token resetowania hasła.'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     validate_password(newPassword)
 
     if newPassword != reNewPassword:
@@ -132,7 +137,6 @@ def resetPasswordConfirm(request):
     user.set_password(newPassword)
     user.reset_password_token = None
     user.save()
-
 
     return Response({'detail': 'Hasło zostało zresetowane.'}, status=status.HTTP_200_OK)
 
@@ -170,4 +174,40 @@ def updateUserProfile(request):
 def getUsers(request):
     users = MyUser.objects.all()
     serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request, pk):
+    userForDeletion = MyUser.objects.get(id=pk)
+    userForDeletion.delete()
+    return Response('Użytkownik został usunięty.')
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUserById(request, pk):
+    user = MyUser.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateUser(request, pk):
+    user = MyUser.objects.get(id=pk)
+
+    data = request.data
+
+    user.username = data['username']
+    user.first_name = data['first_name']
+    user.last_name = data['last_name']
+    user.email = data['email']
+    user.is_staff = data['isAdmin']
+
+    user.save()
+
+    serializer = UserSerializerWithToken(user, many=False)
+
     return Response(serializer.data)

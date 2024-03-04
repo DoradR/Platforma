@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Row, Col, FormGroup, Form, Button, Table } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { FaX } from 'react-icons/fa6'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserProfile, } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
@@ -90,7 +90,7 @@ function ProfileScreen() {
         if(!userInfo){
             navigate('/login')
         }else{
-            if(!user || !user.name || success){
+            if(!user || !user.name || success || userInfo._id !== user._id){
                 dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders())
@@ -166,7 +166,6 @@ function ProfileScreen() {
                                     placeholder='Wprowadz hasło'
                                     value={password}
                                     onChange={(e) => {
-                                        console.log(passwordIsValid)
                                         setPassword(e.target.value)
                                         validatePassword(e.target.value)
                                     }}
