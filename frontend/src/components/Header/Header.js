@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { Container, Nav, Navbar, NavbarBrand, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import logo from './logo.png'
 import './Header.css'
@@ -76,10 +76,10 @@ function Header() {
                   </LinkContainer>
                 </NavDropdown>
                 </Nav>
-                <Nav>
+                <Nav style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
                 {userInfo && userInfo.isAdmin && (
-                  <NavDropdown title={(<RiAdminFill/>)} id='adminmenu' style={{textTransform:'uppercase', fontSize:'2.5rem'}} drop={'start'}>
+                  <NavDropdown title={(<NavbarBrand style={{fontSize: '2rem', textTransform: 'uppercase'}}><RiAdminFill/>Admin</NavbarBrand>)} id='adminmenu' style={{display: 'flex', alignItems: 'center',fontSize:'2rem'}} drop={'start'}>
 
                     <LinkContainer to='/admin/userlist'>
                       <NavDropdown.Item>Użytkownicy</NavDropdown.Item>
@@ -96,13 +96,14 @@ function Header() {
                   </NavDropdown>
                 )}
 
-                <LinkContainer to='/cart' style={{display: 'flex', alignItems: 'center'}}>
-                  <Nav.Link><BsCartFill style={{fontSize:'2.5rem'}}/></Nav.Link>
+                <LinkContainer to='/cart' style={{fontSize:'2rem'}}>
+                  <Nav.Link><BsCartFill/> KOSZYK</Nav.Link>
                 </LinkContainer>
                 
 
                 {userInfo ? (
-                  <NavDropdown title={(<FaUser/>)} id='username' style={{textTransform:'uppercase', fontSize:'2.5rem'}} drop={'start'}>
+                    <NavDropdown title={(<NavbarBrand style={{fontSize: '2rem', textTransform: 'uppercase'}}><FaUser/>DR</NavbarBrand>)} id='username' style={{fontSize:'2rem'}} drop={'start'}>
+
 
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item>Profil</NavDropdown.Item>
