@@ -37,50 +37,20 @@ function Header() {
                   <Nav.Link>STRONA GŁÓWNA</Nav.Link>
                 </LinkContainer>
 
-                <LinkContainer to='/about'>
-                  <Nav.Link>O NAS</Nav.Link>
-                </LinkContainer>
-                <NavDropdown title="OFERTA" id="basic-nav-dropdown">
-                  <LinkContainer to='/diet'>
-                    <NavDropdown.Item>DIETETYKA WETERYNARYJNA</NavDropdown.Item>
-                  </LinkContainer>
-
-                  <LinkContainer to='/curses'>
-                    <NavDropdown.Item>SZKOŁA I KURSY</NavDropdown.Item>
-                  </LinkContainer>
-
-                  <LinkContainer to='/behaviorist'>
-                    <NavDropdown.Item>BEHAWIORYSTYKA</NavDropdown.Item>
-                  </LinkContainer>
-
-                  <NavDropdown.Divider />
-
-                  <LinkContainer to='/pricing'> 
-                    <NavDropdown.Item>CENNIK</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-                <LinkContainer to='/blog'>
-                  <Nav.Link>BLOG</Nav.Link>
-                </LinkContainer>
-
                 <LinkContainer to='/shop'>
                   <Nav.Link>SKLEP</Nav.Link>
                 </LinkContainer>
 
-                <LinkContainer to='/contact'>
-                  <Nav.Link>KONTAKT</Nav.Link>
-                </LinkContainer>
-                <NavDropdown title="WIĘCEJ" id="basic-nav-dropdown">
-                  <LinkContainer to='/partners'>
-                    <NavDropdown.Item>PARTNERZY</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
                 </Nav>
                 <Nav style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
                 {userInfo && userInfo.isAdmin && (
                   <NavDropdown title={(<NavbarBrand style={{fontSize: '2rem', textTransform: 'uppercase'}}><RiAdminFill/>Admin</NavbarBrand>)} id='adminmenu' style={{display: 'flex', alignItems: 'center',fontSize:'2rem'}} drop={'start'}>
 
+                    <LinkContainer to='/admin/articlelist'>
+                      <NavDropdown.Item>Artykuły</NavDropdown.Item>
+                    </LinkContainer>
+                    
                     <LinkContainer to='/admin/userlist'>
                       <NavDropdown.Item>Użytkownicy</NavDropdown.Item>
                     </LinkContainer>

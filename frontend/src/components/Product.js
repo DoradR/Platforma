@@ -2,12 +2,15 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import Rating from './Rating'
 import { Link } from 'react-router-dom'
+import config from '../config'
 
 function Product({product}) {
+    const env = process.env.NODE_ENV || 'development';
+    const backendUrl = config[env].backendUrl;
   return (
     <Card className="my-3 p-3 mx-4 rounded">
         <Link to={`/product/${product._id}`}>
-            <Card.Img src={product.image} style={{display: 'flex', justifySelf:'center', margin: 'auto'}}/>
+            <Card.Img src={`${backendUrl}/${product.image}`} style={{display: 'flex', justifySelf:'center', margin: 'auto', maxWidth: 'fit-content'}} />
         </Link>
         <Card.Body>
             <Link to={`/product/${product._id}`}>

@@ -10,8 +10,11 @@ import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
+import config from '../config'
 
 function PlaceorderScreen() {
+    const env = process.env.NODE_ENV || 'development';
+    const backendUrl = config[env].backendUrl;
     const orderCreate = useSelector(state => state.orderCreate)
     const {order, error, success} = orderCreate
 
@@ -49,7 +52,7 @@ function PlaceorderScreen() {
     <div>
         <Header/>
             <CheckoutSteps step1 step2 step3 step4/>
-            <Row>
+            <Row className='shopscreen-row mx-auto'>
                 <Col md={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
@@ -82,7 +85,7 @@ function PlaceorderScreen() {
                                         <ListGroup.Item key={index}>
                                             <Row>
                                                 <Col md={2}>
-                                                    <Image src={item.image} alt={item.name} fluid rounded/>
+                                                    <Image src={`${backendUrl}/${item.image}`} alt={item.name} fluid rounded/>
                                                 </Col>
 
                                                 <Col>

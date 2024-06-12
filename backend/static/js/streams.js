@@ -1,4 +1,4 @@
-const APP_ID = '#'
+const APP_ID = '1d430eac3c364926ae5e1dd975246f56'
 const CHANNEL = sessionStorage.getItem('room')
 const TOKEN = sessionStorage.getItem('token')
 
@@ -37,7 +37,7 @@ let joinAndDisplayLocalStream = async () => {
                      <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                      <div class="video-player" id="user-${UID}"></div>
                  </div>`
-    document.getElementById('video-stremas').insertAdjacentHTML('beforeend', player)
+    document.getElementById('video-streams').insertAdjacentHTML('beforeend', player)
 
     localTracks[1].play(`user-${UID}`)
 
@@ -60,7 +60,7 @@ let handleUserJoined = async (user, mediaType) => {
                      <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                      <div class="video-player" id="user-${user.uid}"></div>
                  </div>`
-        document.getElementById('video-stremas').insertAdjacentHTML('beforeend', player)
+        document.getElementById('video-streams').insertAdjacentHTML('beforeend', player)
         user.videoTrack.play(`user-${user.uid}`)
     }
 

@@ -31,7 +31,7 @@ function PaymentScreen() {
     <div>
         <Header/>
         <CheckoutSteps step1 step2 step3/>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} style={{padding: '1rem', height: 'auto', width: '50%', margin: 'auto'}}>
                 <Form.Group>
                     <Form.Label as='legend'>Wybierz metodę</Form.Label>
                     <Col>

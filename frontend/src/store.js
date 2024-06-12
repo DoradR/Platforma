@@ -28,6 +28,14 @@ import {
     orderListReducer,
     orderSendReducer,
 } from './reducers/orderReducers'
+import { 
+    articleReducer,
+    articleDetailsReducer,
+    articleCreateReducer,
+    articleDeleteReducer,
+    articleUpdateReducer,
+    articleImageUploadReducer,
+} from './reducers/articleReducers'
 
 
 const reducer = combineReducers({
@@ -56,6 +64,13 @@ const reducer = combineReducers({
     orderListMy: orderListMyReducer,
     orderList: orderListReducer,
     orderSend: orderSendReducer,
+
+    articleList: articleReducer,
+    articleDetails: articleDetailsReducer,
+    articleCreate: articleCreateReducer,
+    articleDelete: articleDeleteReducer,
+    articleUpdate: articleUpdateReducer,
+    articleImageUpload: articleImageUploadReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') 

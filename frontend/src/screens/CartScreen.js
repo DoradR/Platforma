@@ -7,8 +7,11 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Message from '../components/Message'
+import config from '../config'
 
 function CartScreen() {
+  const env = process.env.NODE_ENV || 'development';
+  const backendUrl = config[env].backendUrl;
   const {id} = useParams()
   const location = useLocation()
   const quantity = location.search ? Number(location.search.split('=')[1]) : 1
@@ -50,7 +53,7 @@ function CartScreen() {
                     <ListGroup.Item key={item.product}>
                       <Row>
                         <Col md={2}>
-                          <Image src={item.image} alt={item.name} fluid rounded/>
+                          <Image src={`${backendUrl}/${item.image}`} alt={item.name} fluid rounded/>
                         </Col>
                         
                         <Col md={3}>

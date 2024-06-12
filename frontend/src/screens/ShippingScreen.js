@@ -30,7 +30,7 @@ function ShippingScreen() {
     <div>
         <Header/>
             <CheckoutSteps step1 step2/>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} style={{padding: '1rem', height: 'auto', width: '50%', margin: 'auto'}}>
                 <Form.Group controlId='address'>
                     <Form.Label>Adres</Form.Label>
                     <Form.Control

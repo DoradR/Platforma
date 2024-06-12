@@ -12,8 +12,11 @@ import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import config from '../config'
 
 function OrderScreen() {
+    const env = process.env.NODE_ENV || 'development';
+    const backendUrl = config[env].backendUrl;
     const {id} = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -83,7 +86,7 @@ function OrderScreen() {
   ) : (
     <div>
         <Header/>
-            <Row>
+            <Row className='shopscreen-row mx-auto'>
                 <Col md={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
@@ -128,7 +131,7 @@ function OrderScreen() {
                                         <ListGroup.Item key={index}>
                                             <Row>
                                                 <Col md={2}>
-                                                    <Image src={item.image} alt={item.name} fluid rounded/>
+                                                    <Image src={`${backendUrl}/${item.image}`} alt={item.name} fluid rounded/>
                                                 </Col>
 
                                                 <Col>

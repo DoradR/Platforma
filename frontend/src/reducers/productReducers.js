@@ -159,4 +159,4 @@ export const productImageUploadReducer = (state = { }, action) => {
         default:
             return state
     }
-};
+}

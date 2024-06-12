@@ -1,8 +1,6 @@
 import { Container } from 'react-bootstrap'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import HomeScreen from './screens/HomeScreen'
-
 import LoginScreen from './screens/login/LoginScreen'
 import RegisterScreen from './screens/login/RegisterScreen'
 import ResetPasswordScreen from './screens/login/ResetPasswordScreen'
@@ -22,6 +20,10 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import ArticlesScreen from './screens/ArticlesScreen'
+import ArticleScreen from './screens/ArticleScreen'
+import ArticleListScreen from './screens/ArticleListScreen'
+import ArticleEditScreen from './screens/ArticleEditScreen'
 
 function App() {
   return (
@@ -29,7 +31,9 @@ function App() {
       <main>
         <Container className='app-container'>
           <Routes>
-            <Route path='/' element={<HomeScreen/>} exact/>
+            <Route path='/' element={<ArticlesScreen/>} exact/>
+            <Route path='/article/:id' element={<ArticleScreen/>} exact/>
+
             <Route path='/login' element={<LoginScreen/>}/>
             <Route path='/register' element={<RegisterScreen/>}/>
             <Route path='/reset-password' element = {<ResetPasswordScreen/>}/>
@@ -48,9 +52,14 @@ function App() {
 
             <Route path='/admin/userlist' element={<UserListScreen/>}/>
             <Route path='/admin/user/:id/edit' element={<UserEditScreen/>}/>
+
             <Route path='/admin/productlist' element={<ProductListScreen/>}/>
             <Route path='/admin/product/:id/edit' element={<ProductEditScreen/>}/>
+
             <Route path='/admin/orderlist' element={<OrderListScreen/>}/>
+
+            <Route path='/admin/articlelist' element={<ArticleListScreen/>}/>
+            <Route path='/admin/article/:id/edit' element={<ArticleEditScreen/>}/>
           </Routes>
         </Container>
 

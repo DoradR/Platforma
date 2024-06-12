@@ -9,8 +9,11 @@ import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import config from '../config'
 
 function ProductScreen() {
+  const env = process.env.NODE_ENV || 'development';
+  const backendUrl = config[env].backendUrl;
   const [quantity, setQuantity] =  useState(1)
   const params = {qty:quantity}
   const navigate = useNavigate()
@@ -41,7 +44,7 @@ function ProductScreen() {
                 :(
                   <Row className='shopscreen-row mx-auto' style={{display: 'flex', justifyContent: 'center'}}>
                     <Col md='auto' className='mt-3'>
-                      <Image src={product.image} alt={product.name} fluid className='mx-auto'/>
+                      <Image src={`${backendUrl}/${product.image}`} alt={product.name} fluid className='mx-auto'/>
                     </Col>
                     <Col md={3} className='mt-3'>
                       <ListGroup variant='flush'>
