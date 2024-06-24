@@ -142,7 +142,7 @@ function PlaceorderScreen() {
                                     disabled={cart.cartItems.length === 0}
                                     onClick={placeOrder}
                                 >
-                                    Złóż zamówienie
+                                    Złóż zamówienie z obowiązkiem zapłaty
                                 </Button>
                             </ListGroup.Item>
                         </ListGroup>

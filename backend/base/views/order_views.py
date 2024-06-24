@@ -9,6 +9,8 @@ from base.serializers import ProductSerializer, OrderSerializer
 
 from rest_framework import status
 from datetime import datetime
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 @api_view(['POST'])
@@ -53,6 +55,19 @@ def addOrderItems(request):
             product.save()
 
         serializer = OrderSerializer(order, many=False)
+
+        subject = f'Potwierdzenie zamówienia nr {order._id}'
+        message = f'Dziękujemy za złożenie zamówienia.\n\nDane do przelewu:\nKwota: {order.totalPrice} zł\nTytułem: Zamówienie {order._id}.\nNumer konta: 12 3456 7890 1234 5678 9012 3456\nInformujemy iż kurs pojawi się na Państwa profilu do 24h po zaksięgowaniu wpłaty.'
+        recipient_list = [user.email]
+        
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            recipient_list,
+            fail_silently=False,
+        )
+
         return Response(serializer.data)
 
 

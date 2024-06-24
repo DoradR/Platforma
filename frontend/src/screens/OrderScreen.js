@@ -86,6 +86,7 @@ function OrderScreen() {
   ) : (
     <div>
         <Header/>
+        <Message variant='info'><strong>Zamówienie zostało złożonę, email z danym do przelewu, znajduję się na Państwa skrzynce mailowej.</strong></Message>
             <Row className='shopscreen-row mx-auto'>
                 <Col md={8}>
                     <ListGroup variant='flush'>

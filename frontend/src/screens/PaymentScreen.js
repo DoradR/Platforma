@@ -37,8 +37,8 @@ function PaymentScreen() {
                     <Col>
                         <Form.Check
                             type='radio'
-                            label='Przelewy24 albo Karta Kredytowa'
-                            id='przelewy24'
+                            label='Przelew bankowy'
+                            id='przelew'
                             name='paymentMethod'
                             checked
                             onChange={(e) => setPaymentMethod(e.target.value)}

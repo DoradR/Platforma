@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Nav, Navbar, NavbarBrand, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import logo from './logo.png'
 import './Header.css'
 import { FaUser } from 'react-icons/fa'
@@ -15,9 +16,11 @@ function Header() {
   const{userInfo} = userLogin
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const logoutHandler = () => {
     dispatch(logout())
+    navigate('/login')
   }
   return (
       <Navbar bg="light" expand="lg" collapseOnSelect>
