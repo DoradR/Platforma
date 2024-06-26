@@ -87,7 +87,7 @@ def getOrderById(request, pk):
         return Response({'detail': 'Zamówienie nie istnieje.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(['GET'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)

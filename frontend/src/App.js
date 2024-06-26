@@ -24,6 +24,7 @@ import ArticlesScreen from './screens/ArticlesScreen'
 import ArticleScreen from './screens/ArticleScreen'
 import ArticleListScreen from './screens/ArticleListScreen'
 import ArticleEditScreen from './screens/ArticleEditScreen'
+import MyCoursesScreen from './screens/MyCoursesScreen'
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path='/reset-password-confirm/:id/:token' element = {<ResetPasswordConfirmScreen/>}/>
             
             <Route path='/profile' element={<ProfileScreen/>}/>
+            <Route path='/mycourses' element={<MyCoursesScreen />}/>
 
             <Route path='/shop' element={<ShopScreen/>} exact/>
             <Route path='/product/:id' element={<ProductScreen/>}/>

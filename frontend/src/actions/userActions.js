@@ -41,6 +41,10 @@ import {
     USER_UPDATE_REQUEST,
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAIL,
+
+    USER_COURSES_REQUEST,
+    USER_COURSES_SUCCESS,
+    USER_COURSES_FAIL,
  } from '../constants/UserConstants'
 
  import { ORDER_LIST_MY_RESET } from '../constants/OrderConstants'
@@ -406,6 +410,44 @@ export const updateUser = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_FAIL,
+            payload: error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+        })
+    }
+}
+
+export const getUserCourses = () => async (dispatch, getState) => {
+    try{
+        dispatch({type: USER_COURSES_REQUEST})
+
+        const env = process.env.NODE_ENV || 'development';
+        const backendUrl = config[env].backendUrl;
+
+        const {
+            userLogin: {userInfo},
+        } = getState()
+
+        const configurations = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}` 
+            }
+        }
+
+        const {data} = await axios.get(
+            `${backendUrl}/api/users/mycourses/`,
+            configurations
+        )
+
+        dispatch({
+            type: USER_COURSES_SUCCESS,
+            payload: data
+        })
+        
+    } catch (error) {
+        dispatch({
+            type: USER_COURSES_FAIL,
             payload: error.response && error.response.data.detail
             ? error.response.data.detail
             : error.message,

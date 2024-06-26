@@ -40,6 +40,10 @@ import {
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAIL,
     USER_UPDATE_RESET,
+
+    USER_COURSES_REQUEST,
+    USER_COURSES_SUCCESS,
+    USER_COURSES_FAIL,
 } from '../constants/UserConstants'
 
 
@@ -249,6 +253,29 @@ export const userUpdateReducer = (state = {user: {}}, action) =>{
         case USER_UPDATE_RESET:
             return {
                 user: {}
+            }
+        default:
+            return state
+    }
+}
+
+
+export const userCoursesReducer = (state = { courses: [] }, action) => {
+    switch(action.type){
+        case USER_COURSES_REQUEST:
+            return { 
+                loading: true, 
+                courses: [] 
+            }
+        case USER_COURSES_SUCCESS:
+            return { 
+                loading: false, 
+                courses: action.payload 
+            }
+        case USER_COURSES_FAIL:
+            return { 
+                loading: false, 
+                error: action.payload 
             }
         default:
             return state

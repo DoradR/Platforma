@@ -1,7 +1,7 @@
 from dataclasses import field
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, MyUser, Order, OrderItem, DeliveryAddress, Article
+from .models import Product, MyUser, Order, OrderItem, DeliveryAddress, Article, VideoCourse
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -89,4 +89,10 @@ class OrderSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+        fields = '__all__'
+
+
+class VideoCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoCourse
         fields = '__all__'

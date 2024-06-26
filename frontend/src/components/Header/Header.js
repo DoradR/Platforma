@@ -82,6 +82,10 @@ function Header() {
                       <NavDropdown.Item>Profil</NavDropdown.Item>
                     </LinkContainer>
 
+                    <LinkContainer to='/mycourses'>
+                      <NavDropdown.Item>Moje Kursy</NavDropdown.Item>
+                    </LinkContainer>
+
                     <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
 
                   </NavDropdown>

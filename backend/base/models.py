@@ -37,6 +37,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     reset_password_token = models.CharField(max_length=100, null=True, blank=True)
 
+    video_courses = models.ManyToManyField('VideoCourse',blank=True)
+
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
@@ -62,7 +64,7 @@ class Product(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
-    # video_course = models.OneToOneField("VideoCourse", on_delete=models.SET_NULL, null=True, blank=True)
+    video_course = models.OneToOneField('VideoCourse', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -109,10 +111,12 @@ class Order(models.Model):
     def __str__(self):
         return str(self.createdAt)
     
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     if self.products.exists() and self.products.first().video_course:
-    #         self.user.video_courses.add(self.products.first().video_course)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.isPaid or self.isSended:
+            for item in self.orderitem_set.all():
+                if item.product.video_course:
+                    self.user.video_courses.add(item.product.video_course)
     
 
 class VideoCourse(models.Model):

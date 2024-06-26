@@ -7,12 +7,12 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from base.models import MyUser
+from base.models import MyUser, VideoCourse
 
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from rest_framework.exceptions import ValidationError
-from base.serializers import UserSerializer, UserSerializerWithToken
+from base.serializers import UserSerializer, UserSerializerWithToken, VideoCourseSerializer
 from django.core.mail import send_mail
 from django.conf import settings
 from ..config import config
@@ -210,4 +210,13 @@ def updateUser(request, pk):
 
     serializer = UserSerializerWithToken(user, many=False)
 
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyCourses(request):
+    user = request.user
+    courses = user.video_courses.all()
+    serializer = VideoCourseSerializer(courses, many=True)
     return Response(serializer.data)
