@@ -37,8 +37,8 @@ def updateArticle(request, pk):
     data = request.data
     article = Article.objects.get(_id=pk)
 
-    article.name = data['title']
-    article.price = data['content']
+    article.title = data['title']
+    article.content = data['content']
 
     article.save()
 

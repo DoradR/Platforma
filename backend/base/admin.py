@@ -13,7 +13,7 @@ class UserAdmin(BaseUserAdmin):
         readonly_fields = list(super().get_readonly_fields(request, obj))
         readonly_fields.append('date_joined')
         return readonly_fields
-    
+
 
 class ProductAdminForm(forms.ModelForm):
     class Meta:
@@ -22,16 +22,18 @@ class ProductAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProductAdminForm, self).__init__(*args, **kwargs)
-        self.fields['user'].queryset = get_user_model().objects.filter(is_superuser=True)
+        self.fields['user'].queryset = get_user_model(
+        ).objects.filter(is_superuser=True)
+
 
 class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
+
 
 admin.site.register(Product, ProductAdmin)
 
 
 admin.site.register(MyUser, UserAdmin)
-admin.site.register(Review)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(DeliveryAddress)

@@ -1,0 +1,29 @@
+img {
+    max-width: 150px;
+}
+
+.nav-link{
+    text-align: right;
+    padding: 5px 20px 5px 0px;
+}
+
+.nav-link:hover{
+    color: #000
+}
+
+.navbar-toggler{
+    margin-right: 20px;
+    margin-left: auto;
+
+}
+
+.dropdown-item{
+    text-align: right;
+    padding: 5px 20px 5px 20px;
+}
+
+.dropdown-item:hover{
+    background-color: #2387A0;
+}
+
+

@@ -1,0 +1,82 @@
+html {
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fff; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2387A0; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #23A1C0; 
+}
+
+main {
+    position: relative;
+    min-height: 100vh;
+}
+
+.app-container {
+    padding-bottom: 7rem;
+}
+
+.rating span {
+    margin: 0.1rem;
+}
+
+.shopscreen-row {
+    width: 100%;
+    padding-bottom: 7rem;
+    margin: 0!important;
+}
+
+@media only screen and (max-width: 980px) {
+    .shopscreen-row {
+        padding-bottom: 10rem;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .shopscreen-row {
+        padding-bottom: 15rem;
+    }
+}
+
+.style-of-screens {
+    width: 100%;
+    padding-bottom: 7rem;
+    margin: 0!important;
+}
+
+@media only screen and (max-width: 980px) {
+    .style-of-screens {
+        padding-bottom: 10rem;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .style-of-screens {
+        padding-bottom: 15rem;
+    }
+}
+
+.link-in-link {
+    color: black;
+    text-decoration: none;
+}
+
+.link-in-link:hover {
+    text-decoration: underline;
+}
+
+.form-from-profile-screen {
+    background: #2387a0;
+    color: white;
+}

@@ -37,7 +37,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     reset_password_token = models.CharField(max_length=100, null=True, blank=True)
 
-    video_courses = models.ManyToManyField('VideoCourse',blank=True)
+    video_courses = models.ManyToManyField('VideoCourse')
 
     objects = MyUserManager()
 
@@ -52,19 +52,14 @@ class Product(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=256, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, default='/placeholder.png')
-    brand = models.CharField(max_length=256, null=True, blank=True)
-    category = models.CharField(max_length=256, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    rating = models.DecimalField(
-        max_digits=7, decimal_places=2, null=True, blank=True)
-    numReviews = models.IntegerField(null=True, blank=True, default=0)
     price = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
     countInStock = models.IntegerField(null=True, blank=True, default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
-    video_course = models.OneToOneField('VideoCourse', on_delete=models.SET_NULL, null=True, blank=True)
+    video_course = models.OneToOneField('VideoCourse', on_delete=models.CASCADE, related_name='product_related', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -82,18 +77,6 @@ class Article(models.Model):
         return self.title
 
 
-class Review(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(MyUser, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=256, null=True, blank=True)
-    rating = models.IntegerField(null=True, blank=True, default=0)
-    comment = models.TextField(null=True, blank=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return str(self.rating)
-
-
 class Order(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.SET_NULL, null=True)
     paymentMethod = models.CharField(max_length=256, null=True, blank=True)
@@ -103,8 +86,6 @@ class Order(models.Model):
         max_digits=7, decimal_places=2, null=True, blank=True)
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-    isSended = models.BooleanField(default=False)
-    sendedAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
@@ -113,13 +94,15 @@ class Order(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.isPaid or self.isSended:
+        if self.isPaid:
             for item in self.orderitem_set.all():
                 if item.product.video_course:
                     self.user.video_courses.add(item.product.video_course)
     
 
 class VideoCourse(models.Model):
+    id = models.AutoField(primary_key=True)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='video_course_related', null=True, blank=True)
     name = models.CharField(max_length=256, null=True, blank=True)
     video_file = models.FileField(upload_to='videos/', null=True, blank=True)
 

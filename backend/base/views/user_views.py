@@ -12,11 +12,14 @@ from base.models import MyUser, VideoCourse
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from rest_framework.exceptions import ValidationError
-from base.serializers import UserSerializer, UserSerializerWithToken, VideoCourseSerializer
+from base.serializers import UserSerializer, UserSerializerWithToken, VideoCourseSerializer, ProductSerializer
 from django.core.mail import send_mail
 from django.conf import settings
 from ..config import config
 import re
+
+from datetime import datetime, timedelta
+import jwt
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -218,5 +221,66 @@ def updateUser(request, pk):
 def getMyCourses(request):
     user = request.user
     courses = user.video_courses.all()
-    serializer = VideoCourseSerializer(courses, many=True)
-    return Response(serializer.data)
+
+    # Serializacja danych kursów wraz z danymi produktu
+    serialized_courses = []
+    for course in courses:
+        serialized_course = VideoCourseSerializer(course).data
+        if course.product:
+            serialized_product = ProductSerializer(course.product).data
+            serialized_course['product'] = serialized_product
+        serialized_courses.append(serialized_course)
+
+    return Response(serialized_courses)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getTemporaryCourseToken(request, course_id):
+    try:
+        course = VideoCourse.objects.get(id=course_id)
+        if course not in request.user.video_courses.all():
+            return Response({'detail': 'Nie masz dostępu do tego kursu.'}, status=status.HTTP_403_FORBIDDEN)
+
+        payload = {
+            'user_id': request.user.id,
+            'course_id': course.id,
+            'exp': datetime.now() + timedelta(hours=1)
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+        return Response({'token': token}, status=status.HTTP_200_OK)
+
+    except VideoCourse.DoesNotExist:
+        return Response({'detail': 'Kurs nie istnieje.'}, status=status.HTTP_404_NOT_FOUND)
+
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def accessCourse(request, token):
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        user_id = payload['user_id']
+        course_id = payload['course_id']
+
+        user = MyUser.objects.get(id=user_id)
+        course = VideoCourse.objects.get(id=course_id)
+
+        if user != request.user:
+            return Response({'detail': 'Nie masz dostępu do tego kursu.'}, status=status.HTTP_403_FORBIDDEN)
+
+        if course not in user.video_courses.all():
+            return Response({'detail': 'Nie masz dostępu do tego kursu.'}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = VideoCourseSerializer(course)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except jwt.ExpiredSignatureError:
+        return Response({'detail': 'Token wygasł.'}, status=status.HTTP_401_UNAUTHORIZED)
+    except jwt.InvalidTokenError:
+        return Response({'detail': 'Nieprawidłowy token.'}, status=status.HTTP_401_UNAUTHORIZED)
+    except MyUser.DoesNotExist:
+        return Response({'detail': 'Użytkownik nie istnieje.'}, status=status.HTTP_404_NOT_FOUND)
+    except VideoCourse.DoesNotExist:
+        return Response({'detail': 'Kurs nie istnieje.'}, status=status.HTTP_404_NOT_FOUND)

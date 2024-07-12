@@ -13,6 +13,8 @@ urlpatterns = [
     path('', views.getUsers, name="users"),
 
     path('mycourses/', views.getMyCourses, name="my-courses"),
+    path('course/<int:course_id>/token/', views.getTemporaryCourseToken, name='get-course-token'),
+    path('course/access/<str:token>/', views.accessCourse, name='access-course'),
 
     path('delete/<str:pk>/', views.deleteUser, name='user-delete'),
     path('<str:pk>/', views.getUserById, name='user'),

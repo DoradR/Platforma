@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
-from base.models import Product
+from base.models import Product, VideoCourse
 
 from base.serializers import ProductSerializer
 
@@ -29,9 +29,7 @@ def createProduct(request):
         user=user,
         name='Przykładowa nazwa',
         price=0,
-        brand='Przykładowa marka',
         countInStock=0,
-        category='Przykładowa kategoria',
         description=''
     )
     serializer = ProductSerializer(product, many=False)
@@ -46,9 +44,7 @@ def updateProduct(request, pk):
 
     product.name = data['name']
     product.price = data['price']
-    product.brand = data['brand']
     product.countInStock = data['countInStock']
-    product.category = data['category']
     product.description = data['description']
 
     product.save()
@@ -75,3 +71,22 @@ def uploadImage(request):
     product.image = request.FILES.get('image')
     product.save()
     return Response('Zdjęcie zostało dodane.')
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def uploadVideo(request):
+    data = request.data
+    product_id = data.get('product_id')
+    product = Product.objects.get(_id=product_id)
+
+    video_course = VideoCourse.objects.create(
+        product=product,
+        name=data.get('video_name'),
+        video_file=data.get('video_course')
+    )
+
+    product.video_course = video_course
+    product.save()
+
+    return Response('Wideo zostało dodane.')

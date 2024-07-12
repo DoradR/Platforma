@@ -4,7 +4,7 @@ class Config:
 
     def get_backend_url(self):
         if self.environment == 'development':
-            return 'http://localhost:3000'
+            return 'http://127.0.0.1:3000'
         elif self.environment == 'production':
             return 'http://backend.example.com'
         else:
