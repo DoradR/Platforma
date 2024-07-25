@@ -98,7 +98,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DB_NAME = "platforma2"
+DB_NAME = "platforma"
 DB_USER = "django"
 DB_PASSWORD = "password"
 DATABASES = {

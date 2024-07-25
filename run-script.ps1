@@ -24,6 +24,7 @@ psql -U postgres -d postgres -c "ALTER DATABASE platforma OWNER TO django;"
 .\restore-database.ps1
 
 cd backend
+# python manage.py makemigrations
 cd frontend
 npm install
 npm run build
