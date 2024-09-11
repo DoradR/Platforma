@@ -16,7 +16,7 @@ In order to install the application and fully configure it, we need to install s
 <ol>
 <li><strong>Python</strong> version 3.11.2 <a href="https://www.python.org/downloads/release/python-3112/">Link to page</a>, depending on the operating system, select the appropriate link at the bottom of the page.</li>
 <li><strong>Node.js</strong> version 18.15.0 <a href="https://nodejs.org/en/blog/release/v18.15.0">Link to the page</a>, depending on the operating system we choose the appropriate link at the bottom of the page.</li>
-<li><strong>PostgreSQL</strong> version 15.7 <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">Link to the page</a>, depending on the operating system, we choose the version 15.7 and the appropriate link for our operating system.</li>
+<li><strong>PostgreSQL</strong> version 15 <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">Link to the page</a>, depending on the operating system, we choose the version 15.7 and the appropriate link for our operating system.</li>
 </ol>
 <blockquote>
 <p><strong>It is very important to remember your PostgreSQL password when installing it.</strong></p>
